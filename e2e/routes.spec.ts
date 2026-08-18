@@ -10,7 +10,7 @@ const routes = [
 for (const [route, heading] of routes) {
   test(`${route} 직접 접근이 SPA에서 복원된다`, async ({ page }) => {
     await page.goto(route)
-    await expect(page).toHaveTitle('몽골 원정대')
+    await expect(page).toHaveTitle('고비, 테를지 5박 6일 여행')
     await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible()
     await expect(page.getByText('이 기기에 저장')).toBeVisible()
   })
@@ -37,7 +37,7 @@ test('확정 항공편과 예보 가능 시점을 표시한다', async ({ page }
   await expect(page.getByText('8월 25일부터 상세 예보를 확인할 수 있어요.')).toBeVisible()
 })
 
-test('360px 일정 화면에 해·별 시간과 취소 일정을 표시한다', async ({ page }) => {
+test('360px 일정 화면에 해·별 시간과 이동·숙소 정보를 표시한다', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 })
   await page.goto('/itinerary')
 
@@ -50,11 +50,18 @@ test('360px 일정 화면에 해·별 시간과 취소 일정을 표시한다', 
   await expect(dayTwoAstronomy).not.toHaveAttribute('open', '')
   await expect(dayTwoAstronomy.getByText('별 보기 좋은 시간')).not.toBeVisible()
 
-  const cancelled = page.locator('.schedule-item.cancelled').filter({ hasText: '바가가즈린촐로 투어' })
-  await expect(cancelled).toBeVisible()
-  await expect(cancelled.getByText('취소', { exact: true })).toBeVisible()
-  const decoration = await cancelled.getByRole('heading', { name: '바가가즈린촐로 투어' }).evaluate((element) => getComputedStyle(element).textDecorationLine)
-  expect(decoration).toContain('line-through')
+  await expect(page.getByText('31시간', { exact: true })).toBeVisible()
+  await expect(page.getByText('2,000km', { exact: true })).toBeVisible()
+  const firstDayGuide = page.locator('.day-guide-card').first()
+  await expect(firstDayGuide.getByRole('heading', { name: '바가가즈린촐로 · 차강소브라가' })).toBeVisible()
+  await expect(firstDayGuide.getByText('✓ 전기 가능', { exact: true })).toBeVisible()
+  await expect(firstDayGuide.getByText('✓ 인터넷 가능', { exact: true })).toBeVisible()
+  await expect(firstDayGuide.getByText('✓ 샤워 가능', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '바가가즈린촐로 투어' })).toBeVisible()
+
+  await page.locator('.tour-operator summary').click()
+  await expect(page.getByRole('link', { name: '홈페이지 ↗' })).toHaveAttribute('href', 'https://www.yeonatour.com/')
+  await expect(page.getByRole('link', { name: '카카오채널 상담 ↗' })).toHaveAttribute('href', 'https://pf.kakao.com/_TxnGHG/chat')
 
   const hasOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)
   expect(hasOverflow).toBe(false)

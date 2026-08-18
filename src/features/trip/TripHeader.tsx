@@ -23,7 +23,7 @@ export function TripHeader({ data, mutate }: Props) {
 
   return (
     <header className="trip-header">
-      <div className="eyebrow">FRIENDS TRIP · MONGOLIA</div>
+      <div className="eyebrow">MONGOLIAN TRIP</div>
       <div className="trip-title-row">
         <div><h1>{data.trip.name}</h1><p>{period}</p></div>
         <button className="ghost compact" onClick={() => setEditing(!editing)} aria-expanded={editing}>역할 설정</button>

@@ -83,10 +83,10 @@ const itinerarySeed: Array<[number, string, string, string]> = [
   [6, '08:00', '울란바토르', '징기스칸 기마 동상 · 시내 투어 · 공항 샌딩'],
 ]
 
-const cancelledBagaItem: ItineraryItem = {
+const bagaItem: ItineraryItem = {
   id: 'local-itinerary-baga-cancelled', trip_id: tripId, title: '바가가즈린촐로 투어', day_number: 1,
-  start_time: '10:00', end_time: null, location: '바가가즈린촐로', note: '방문하지 않는 일정', link_url: null,
-  status: 'cancelled', source: 'quote_pdf', sort_order: 1,
+  start_time: '10:00', end_time: null, location: '바가가즈린촐로', note: '견적서 기준 Day 1 방문 일정', link_url: null,
+  status: 'proposed', source: 'quote_pdf', sort_order: 1,
 }
 
 const flightItems: ItineraryItem[] = [
@@ -108,7 +108,7 @@ function initialData(): TripData {
   const data: TripData = {
     trip: {
       id: tripId,
-      name: '몽골 고비사막·테를지 원정대',
+      name: '고비, 테를지 5박 6일 여행',
       start_date: '2026-09-09',
       end_date: '2026-09-14',
       leader_member_id: null,
@@ -125,7 +125,7 @@ function initialData(): TripData {
       completed_at: task.id === 'local-common-deposit' ? '2026-08-18T00:00:00+09:00' : null,
     }))),
     personalItems: personalSeed(),
-    itinerary: [...flightItems, cancelledBagaItem, ...itinerarySeed.map<ItineraryItem>(([day, time, title, note], index) => ({
+    itinerary: [...flightItems, bagaItem, ...itinerarySeed.map<ItineraryItem>(([day, time, title, note], index) => ({
       id: `local-itinerary-${day}`,
       trip_id: tripId,
       title,
@@ -167,11 +167,19 @@ export function loadLocalData(): TripData {
       data.trip.end_date = '2026-09-14'
       changed = true
     }
+    if (data.trip.name !== '고비, 테를지 5박 6일 여행') {
+      data.trip.name = '고비, 테를지 5박 6일 여행'
+      changed = true
+    }
     for (const flight of flightItems) {
       if (!data.itinerary.some((item) => item.id === flight.id)) { data.itinerary.push(flight); changed = true }
     }
-    if (!data.itinerary.some((item) => item.id === cancelledBagaItem.id)) {
-      data.itinerary.push({ ...cancelledBagaItem })
+    const storedBagaItem = data.itinerary.find((item) => item.id === bagaItem.id)
+    if (!storedBagaItem) {
+      data.itinerary.push({ ...bagaItem })
+      changed = true
+    } else if (storedBagaItem.status === 'cancelled') {
+      Object.assign(storedBagaItem, { status: bagaItem.status, note: bagaItem.note })
       changed = true
     }
     if (!tasks.every((task) => data.tasks.some((item) => item.id === task.id))) {
