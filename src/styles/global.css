@@ -173,7 +173,7 @@ h1, h2, h3, p { margin-top: 0; }
 .route-summary { display: flex; justify-content: space-between; gap: 1rem; margin: 0 0 2rem; padding: 1rem; border: 1px solid #39594c; border-radius: 16px; color: white; background: linear-gradient(125deg, #274c3f, #142d25); box-shadow: 0 10px 28px #17312820; }
 .route-summary h3 { margin: .12rem 0 .25rem; }
 .route-summary p { max-width: 520px; margin: 0; color: #cbd8d2; font-size: .76rem; }
-.route-summary dl { display: grid; grid-template-columns: repeat(3, minmax(90px, 1fr)); gap: .45rem; margin: 0; }
+.route-summary dl { display: grid; grid-template-columns: repeat(3, minmax(100px, 1fr)); gap: .45rem; margin: 0; }
 .route-summary dl div { display: flex; flex-direction: column; justify-content: center; padding: .6rem .7rem; border-radius: 10px; background: #ffffff0d; }
 .route-summary dt { color: #bfcfc7; font-size: .62rem; }
 .route-summary dd { margin: .08rem 0 0; color: #f1d09c; font-size: .88rem; font-weight: 700; white-space: nowrap; }
@@ -266,6 +266,8 @@ h1, h2, h3, p { margin-top: 0; }
 .meal-list dt { color: #887a65; font-size: .58rem; }
 .meal-list dd { margin: .08rem 0 0; color: #3c463f; font-size: .68rem; font-weight: 600; }
 .lodging-summary > strong { display: block; font-size: .86rem; }
+.lodging-summary > strong small { margin-left: .4rem; color: #6e776f; font-size: .65rem; font-weight: 500; }
+.lodging-price { display: inline-block; margin-top: .3rem; padding: .2rem .4rem; border-radius: 99px; color: #7b5423; background: #f0d9ac; font-size: .62rem; font-weight: 700; }
 .lodging-summary > p { margin: .25rem 0 0; color: #6d756f; font-size: .68rem; }
 .amenity-list { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .35rem; }
 .amenity-list span { padding: .22rem .42rem; border-radius: 99px; color: #28513f; background: #dce9df; font-size: .62rem; font-weight: 700; }

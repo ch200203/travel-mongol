@@ -75,7 +75,7 @@ function personalSeed(): PersonalItem[] {
 }
 
 const itinerarySeed: Array<[number, string, string, string]> = [
-  [1, '06:00', '차강소브라가', '하이에스 이동 · 공항 미팅 후 출발 · 차강소브라가 일몰'],
+  [1, '05:00', '차강소브라가', '오전 5시 공항 미팅 · 하이에스 이동 · 차강소브라가 일몰'],
   [2, '08:00', '욜링암', '욜링암 투어 · 캠프파이어와 은하수 헌팅 선택'],
   [3, '08:00', '홍고린엘스', '고비사막 투어 · 모래썰매 · 낙타 체험'],
   [4, '09:00', '바양작', '바양작 투어 후 여행자 캠프 숙박'],
@@ -85,8 +85,14 @@ const itinerarySeed: Array<[number, string, string, string]> = [
 
 const bagaItem: ItineraryItem = {
   id: 'local-itinerary-baga-cancelled', trip_id: tripId, title: '바가가즈린촐로 투어', day_number: 1,
-  start_time: '10:00', end_time: null, location: '바가가즈린촐로', note: '견적서 기준 Day 1 방문 일정', link_url: null,
-  status: 'proposed', source: 'quote_pdf', sort_order: 1,
+  start_time: '10:00', end_time: null, location: '바가가즈린촐로', note: '변경된 일정에서 제외', link_url: null,
+  status: 'cancelled', source: 'quote_pdf', sort_order: 1,
+}
+
+const tourEndItem: ItineraryItem = {
+  id: 'local-itinerary-tour-end', trip_id: tripId, title: '시내 투어 종료 및 공항 샌딩', day_number: 6,
+  start_time: '16:00', end_time: null, location: '울란바토르 → UBN', note: '오후 4시 시내 투어 종료 후 공항으로 이동', link_url: null,
+  status: 'confirmed', source: 'manual', sort_order: 98,
 }
 
 const flightItems: ItineraryItem[] = [
@@ -125,7 +131,7 @@ function initialData(): TripData {
       completed_at: task.id === 'local-common-deposit' ? '2026-08-18T00:00:00+09:00' : null,
     }))),
     personalItems: personalSeed(),
-    itinerary: [...flightItems, bagaItem, ...itinerarySeed.map<ItineraryItem>(([day, time, title, note], index) => ({
+    itinerary: [...flightItems, bagaItem, tourEndItem, ...itinerarySeed.map<ItineraryItem>(([day, time, title, note], index) => ({
       id: `local-itinerary-${day}`,
       trip_id: tripId,
       title,
@@ -174,11 +180,14 @@ export function loadLocalData(): TripData {
     for (const flight of flightItems) {
       if (!data.itinerary.some((item) => item.id === flight.id)) { data.itinerary.push(flight); changed = true }
     }
+    const storedTourEnd = data.itinerary.find((item) => item.id === tourEndItem.id)
+    if (!storedTourEnd) { data.itinerary.push({ ...tourEndItem }); changed = true }
+    else if (storedTourEnd.start_time !== tourEndItem.start_time || storedTourEnd.note !== tourEndItem.note) { Object.assign(storedTourEnd, tourEndItem); changed = true }
     const storedBagaItem = data.itinerary.find((item) => item.id === bagaItem.id)
     if (!storedBagaItem) {
       data.itinerary.push({ ...bagaItem })
       changed = true
-    } else if (storedBagaItem.status === 'cancelled') {
+    } else if (storedBagaItem.status !== bagaItem.status || storedBagaItem.note !== bagaItem.note) {
       Object.assign(storedBagaItem, { status: bagaItem.status, note: bagaItem.note })
       changed = true
     }
@@ -230,6 +239,11 @@ export function loadLocalData(): TripData {
     }
     if (firstDay && !firstDay.note?.includes('하이에스')) {
       firstDay.note = `하이에스 이동 · ${firstDay.note ?? ''}`.trim()
+      changed = true
+    }
+    if (firstDay && (firstDay.start_time !== '05:00' || !firstDay.note?.includes('오전 5시 공항 미팅'))) {
+      firstDay.start_time = '05:00'
+      firstDay.note = '오전 5시 공항 미팅 · 하이에스 이동 · 차강소브라가 일몰'
       changed = true
     }
     if (changed) saveLocalData(data)

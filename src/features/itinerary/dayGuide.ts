@@ -6,10 +6,11 @@ export interface MealGuide {
 
 export interface LodgingGuide {
   name: string
+  roomType: string
+  surchargeWon: number
+  complimentaryUpgrade: boolean
   amenities: string[]
   features: string[]
-  candidates: string[]
-  upgrades: string[]
 }
 
 export interface DayGuide {
@@ -29,19 +30,25 @@ const travelerCampFeatures = [
 
 const travelerCampAmenities = ['전기 가능', '인터넷 가능', '샤워 가능']
 
+const premiumCampFeatures = [
+  '현대적 편의시설을 갖춘 상위 등급 캠프예요.',
+  '객실 내부의 개별 샤워실과 화장실, 온수 사용이 가능해요.',
+]
+
 export const dayGuides: DayGuide[] = [
   {
     day: 1,
-    destination: '바가가즈린촐로 · 차강소브라가',
+    destination: '차강소브라가',
     drivingHours: 8,
     drivingKm: 450,
     meals: { breakfast: '불포함', lunch: '현지 식당', dinner: '특식(삼겹살)' },
     lodging: {
-      name: '여행자 캠프',
+      name: '고급 캠프',
+      roomType: '게르형 객실',
+      surchargeWon: 50_000,
+      complimentaryUpgrade: false,
       amenities: travelerCampAmenities,
-      features: [...travelerCampFeatures, '차강소브라가 일몰 후 캠프에서 숙박해요.'],
-      candidates: ['Bulga ger camp', 'Gobi Nomatk ger camp', 'Tsagaan suvrag ger camp', 'Gobi sky ger camp'],
-      upgrades: ['Govi Caravanserai lodge(객실별 추가요금)', '호텔'],
+      features: [...premiumCampFeatures, '차강소브라가 일몰 후 캠프에서 숙박해요.'],
     },
     highlights: ['차강소브라가에서는 운동화 필수', '마트 장보기'],
   },
@@ -52,11 +59,12 @@ export const dayGuides: DayGuide[] = [
     drivingKm: 320,
     meals: { breakfast: '가이드 요리', lunch: '현지 식당', dinner: '특식(허르헉)' },
     lodging: {
-      name: '여행자 캠프',
+      name: '고급 캠프',
+      roomType: '게르형 객실',
+      surchargeWon: 30_000,
+      complimentaryUpgrade: false,
       amenities: travelerCampAmenities,
-      features: [...travelerCampFeatures, '캠핑 또는 유목민 게르로 변경하면 1인당 2만원 할인돼요.'],
-      candidates: ['Gurvan saikhan camp', 'Gobi urguu ger camp', 'Jargantiin urguu ger camp'],
-      upgrades: ['Gobi urguu2 ger camp', 'Tsenguun Govi Hotel', 'Yol Hotel'],
+      features: [...premiumCampFeatures, '욜링암 투어와 캠프파이어 후 편하게 쉴 수 있는 상위 등급 숙소예요.'],
     },
     highlights: ['욜링암 입구 플리마켓', '캠프파이어', '은하수 헌팅'],
   },
@@ -67,11 +75,12 @@ export const dayGuides: DayGuide[] = [
     drivingKm: 300,
     meals: { breakfast: '가이드 요리', lunch: '캠프식', dinner: '가이드 요리' },
     lodging: {
-      name: '여행자 캠프',
+      name: '고급 캠프',
+      roomType: '오두막',
+      surchargeWon: 30_000,
+      complimentaryUpgrade: false,
       amenities: travelerCampAmenities,
-      features: [...travelerCampFeatures, '고비사막 체험 후 같은 지역 캠프에서 쉬어요.'],
-      candidates: ['Gobi tugul ger camp', 'Mandalaa ger camp', 'Gobi Hishig ger camp'],
-      upgrades: ['Gobi discovery ger camp', '고급 캠프(오두막)'],
+      features: [...premiumCampFeatures, '게르 대신 오두막 객실에서 숙박해요.'],
     },
     highlights: ['모래 썰매', '낙타 체험', '은하수 헌팅'],
   },
@@ -83,10 +92,11 @@ export const dayGuides: DayGuide[] = [
     meals: { breakfast: '가이드 요리', lunch: '현지 식당', dinner: '가이드 요리' },
     lodging: {
       name: '여행자 캠프',
+      roomType: '오두막',
+      surchargeWon: 0,
+      complimentaryUpgrade: false,
       amenities: travelerCampAmenities,
-      features: [...travelerCampFeatures, '비교적 이동이 짧은 날로 바양작 투어 후 숙박해요.'],
-      candidates: ['Gurvan saikhan camp', 'Gobi Desert Guest house', 'Gobi urguu ger camp', 'Jargantiin urguu ger camp'],
-      upgrades: ['Gobi urguu2 ger camp', 'Yol Hotel', '호텔'],
+      features: [...travelerCampFeatures, '여행자 캠프의 오두막 객실에서 숙박해요.'],
     },
     highlights: ['바양작 투어', '오후 캠프 휴식'],
   },
@@ -97,11 +107,12 @@ export const dayGuides: DayGuide[] = [
     drivingKm: 690,
     meals: { breakfast: '가이드 요리', lunch: '현지 식당', dinner: '가이드 요리' },
     lodging: {
-      name: '여행자 캠프',
+      name: '고급 캠프',
+      roomType: '상위 등급 객실',
+      surchargeWon: 0,
+      complimentaryUpgrade: true,
       amenities: travelerCampAmenities,
-      features: [...travelerCampFeatures, '장거리 이동 후 테를지 국립공원 권역에서 숙박해요.'],
-      candidates: ['Khumug Resort'],
-      upgrades: ['Terelj Bridge Resort', 'Sondor Resort', 'Premium Bolor', '고급 캠프 또는 호텔'],
+      features: [...premiumCampFeatures, '장거리 이동 후 테를지에서 무료 업그레이드된 고급 캠프를 이용해요.'],
     },
     highlights: ['아리야발 사원', '거북바위', '승마 체험', '독수리 체험(추가 비용)'],
   },
@@ -121,4 +132,6 @@ export const totalDriving = dayGuides.reduce(
   { hours: 0, km: 0 },
 )
 
-export const lodgingCaution = '실제 숙소는 같은 등급의 후보 중 현지 운영 상황에 따라 배정돼요. 오지 지역 특성상 전기·인터넷·온수 사용이 일시적으로 제한될 수 있어요.'
+export const totalLodgingSurchargeWon = dayGuides.reduce((total, day) => total + (day.lodging?.surchargeWon ?? 0), 0)
+
+export const lodgingCaution = '숙소 등급과 객실 형태는 여행팀의 최신 변경안을 반영했어요. 실제 캠프명은 배정 후 확정되며, 오지 지역 특성상 전기·인터넷·온수 사용이 일시적으로 제한될 수 있어요.'

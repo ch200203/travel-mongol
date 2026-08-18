@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dayGuides, totalDriving } from './dayGuide'
+import { dayGuides, totalDriving, totalLodgingSurchargeWon } from './dayGuide'
 
 describe('quote-based day guide', () => {
   it('covers all six days and the quoted driving total', () => {
@@ -14,5 +14,17 @@ describe('quote-based day guide', () => {
       expect(guide.lodging?.amenities).toEqual(['전기 가능', '인터넷 가능', '샤워 가능'])
     }
     expect(dayGuides[5].lodging).toBeNull()
+  })
+
+  it('reflects the selected lodging upgrades and surcharge', () => {
+    expect(dayGuides.slice(0, 5).map((guide) => [guide.lodging?.name, guide.lodging?.roomType])).toEqual([
+      ['고급 캠프', '게르형 객실'],
+      ['고급 캠프', '게르형 객실'],
+      ['고급 캠프', '오두막'],
+      ['여행자 캠프', '오두막'],
+      ['고급 캠프', '상위 등급 객실'],
+    ])
+    expect(totalLodgingSurchargeWon).toBe(110_000)
+    expect(dayGuides[4].lodging?.complimentaryUpgrade).toBe(true)
   })
 })

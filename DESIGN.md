@@ -8,7 +8,7 @@
 
 ## Brand
 - Personality: 함께 여행하는 사람들이 쓰는 따뜻하고 실용적인 몽골 여행 수첩
-- Trust signals: 견적서 기반 정보, 확정·제안·취소 상태, 출처와 현지 변동 가능성 안내
+- Trust signals: 견적서와 여행팀의 최신 변경안 기반 정보, 확정·제안·취소 상태, 현지 변동 가능성 안내
 - Avoid: 여행사 광고처럼 보이는 과장, 확인되지 않은 숙소 확정 표현, 장식 때문에 핵심 일정이 묻히는 화면
 
 ## Product goals
@@ -28,7 +28,7 @@
 
 ## Design principles
 - 먼저 판단할 정보: 이동시간·거리와 숙소 편의시설은 세부 일정 전에 보여준다.
-- 출처의 한계를 드러내기: 실제 캠프 배정 전인 정보는 후보·기본 등급으로 표현하고 현지 제한 가능성을 함께 표시한다.
+- 출처의 한계를 드러내기: 선택한 숙소 등급·객실 형태·추가금과 실제 숙소명 미정 상태를 구분하고 현지 제한 가능성을 함께 표시한다.
 - Tradeoffs: 화면 밀도는 높아지지만 숙소 정보는 접을 수 있는 상세 영역으로 두어 시간표 스캔 속도를 지킨다.
 
 ## Visual language
@@ -42,7 +42,7 @@
 ## Components
 - Existing components to reuse: `ItineraryPage`, `day-group`, `schedule-item`, `subheading`
 - New/changed components: 전체 이동 요약, 접이식 투어사 연락처, `DayGuideCard`, 편의시설 배지, 숙소 상세 `<details>`
-- Variants and states: 숙박 있음(1~5일차), 투어 숙박 없음(6일차), 편의시설 가능, 현지 제한 주의
+- Variants and states: 고급 캠프(유료/무료 업그레이드), 여행자 캠프, 숙박 없음(6일차), 편의시설 가능, 현지 제한 주의
 - Token/component ownership: 일정 전용 스타일은 `src/styles/global.css`, 일정 안내 데이터는 `src/features/itinerary/dayGuide.ts`
 
 ## Accessibility
@@ -67,8 +67,8 @@
 
 ## Content voice
 - Tone: 짧고 친근하지만 운영상 제한은 분명하게 안내한다.
-- Terminology: `여행자 캠프`, `공용 샤워실·화장실`, `숙소 배정 후보`, `업그레이드 선택지`를 일관되게 쓴다.
-- Microcopy rules: 가능 여부는 `가능`, 미포함은 `투어 숙박 없음`, 확정되지 않은 이름은 `후보`로 표기한다. 투어사 링크는 광고 문구 없이 정보와 상담 용도로만 표시한다.
+- Terminology: `고급 캠프`, `여행자 캠프`, `오두막`, `공용/개별 샤워실·화장실`, `무료 업그레이드`를 일관되게 쓴다.
+- Microcopy rules: 가능 여부는 `가능`, 미포함은 `투어 숙박 없음`, 확정되지 않은 숙소명은 화면에 임의로 단정하지 않는다. 투어사 링크는 광고 문구 없이 정보와 상담 용도로만 표시한다.
 
 ## Implementation constraints
 - Framework/styling system: React 19, TypeScript, Vite, 단일 전역 CSS
@@ -78,5 +78,5 @@
 - Test/screenshot expectations: 안내 데이터 완전성 테스트, lint, typecheck, unit test, production build를 통과한다.
 
 ## Open questions
-- [ ] 실제 캠프 배정 확정 후 후보 목록을 확정 숙소명으로 교체할지 결정 / 여행팀 / 숙소 오인 방지
+- [ ] 실제 캠프명이 확정되면 선택 등급 아래에 숙소명을 추가할지 결정 / 여행팀 / 숙소 오인 방지
 - [ ] 오지 지역의 인터넷·온수 운영 시간을 현지 가이드에게 확인해 세부 문구를 갱신할지 결정 / 여행팀 / 현장 준비 정확도
