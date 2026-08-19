@@ -43,10 +43,10 @@ export function ItineraryPage({ data, mutate }: Props) {
   const beginEdit = (item: ItineraryItem) => { setEditing(item); setShowForm(true); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
   return <section>
-    <div className="section-heading"><div><span className="eyebrow">5 NIGHTS · 6 DAYS</span><h2>여행 일정</h2><p>{data.trip.start_date ? '여행 시작일을 기준으로 날짜를 표시해요.' : '출발일이 정해지면 실제 날짜가 자동으로 표시돼요.'}</p></div><button onClick={() => { setEditing(null); setShowForm(!showForm) }}>+ 일정 추가</button></div>
+    <div className="section-heading"><div><span className="eyebrow">5 NIGHTS · 6 DAYS</span><h2>별고비팀 세부 일정</h2><p>{data.trip.start_date ? '여행 시작일을 기준으로 날짜를 표시해요.' : '출발일이 정해지면 실제 날짜가 자동으로 표시돼요.'}</p></div><button onClick={() => { setEditing(null); setShowForm(!showForm) }}>+ 일정 추가</button></div>
     <FlightPanel />
     <section className="route-summary" aria-labelledby="route-summary-title">
-      <div><span className="eyebrow">ROAD TRIP</span><h3 id="route-summary-title">고비사막부터 테를지까지</h3><p>견적서 기준 예상 차량 이동량이에요. 현지 도로와 기상 상황에 따라 달라질 수 있어요.</p></div>
+      <div><span className="eyebrow">ROAD TRIP</span><h3 id="route-summary-title">고비사막부터 테를지까지</h3><p>별고비팀 확정 세부일정 기준이에요. 현지 도로와 기상 상황에 따라 달라질 수 있어요.</p></div>
       <dl><div><dt>투어 시작</dt><dd>9/9 05:00</dd></div><div><dt>투어 종료</dt><dd>9/14 16:00</dd></div><div><dt>총 이동</dt><dd>{totalDriving.hours}시간</dd></div><div><dt>총 거리</dt><dd>{totalDriving.km.toLocaleString('ko-KR')}km</dd></div><div><dt>숙박 구성</dt><dd>고급 4박 · 여행자 1박</dd></div><div><dt>1인 숙소 추가금</dt><dd>{(totalLodgingSurchargeWon / 10_000).toLocaleString('ko-KR')}만원</dd></div></dl>
     </section>
     <details className="tour-operator">
@@ -79,7 +79,7 @@ function DayGuideCard({ guide }: { guide: DayGuide }) {
     </header>
     <div className="day-guide-grid">
       <section aria-label="식사 안내"><h4>식사</h4><dl className="meal-list"><div><dt>아침</dt><dd>{guide.meals.breakfast}</dd></div><div><dt>점심</dt><dd>{guide.meals.lunch}</dd></div><div><dt>저녁</dt><dd>{guide.meals.dinner}</dd></div></dl></section>
-      <section className="lodging-summary" aria-label="숙소 안내"><h4>숙소</h4>{guide.lodging ? <><strong>{guide.lodging.name}<small>{guide.lodging.roomType}</small></strong><span className="lodging-price">{guide.lodging.complimentaryUpgrade ? '무료 업그레이드' : guide.lodging.surchargeWon > 0 ? `1인 +${(guide.lodging.surchargeWon / 10_000).toLocaleString('ko-KR')}만원` : '기본 숙소'}</span><div className="amenity-list">{guide.lodging.amenities.map((amenity) => <span key={amenity}>✓ {amenity}</span>)}</div></> : <><strong>투어 숙박 없음</strong><p>16:00 시내 투어 종료 후 공항 샌딩으로 일정이 끝나요.</p></>}</section>
+      <section className="lodging-summary" aria-label="숙소 안내"><h4>숙소</h4>{guide.lodging ? <><strong>{guide.lodging.name}<small>{guide.lodging.roomType}</small></strong><span className="lodging-price">{guide.lodging.complimentaryUpgrade ? '무료 업그레이드' : guide.lodging.surchargeWon > 0 ? `1인 +${(guide.lodging.surchargeWon / 10_000).toLocaleString('ko-KR')}만원` : '기본 숙소'}</span><div className="amenity-list">{guide.lodging.amenities.map((amenity) => <span key={amenity}>✓ {amenity}</span>)}</div></> : <><strong>투어 숙박 없음</strong><p>15:00 공항으로 출발해 16:00 도착하면 투어가 종료돼요.</p></>}</section>
     </div>
     <div className="highlight-list" aria-label="가능한 체험과 참고사항">{guide.highlights.map((highlight) => <span key={highlight}>{highlight}</span>)}</div>
     {guide.lodging && <details className="lodging-details"><summary>숙소 특징 보기</summary><div><ul>{guide.lodging.features.map((feature) => <li key={feature}>{feature}</li>)}</ul><small>{lodgingCaution}</small></div></details>}

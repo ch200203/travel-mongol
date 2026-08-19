@@ -27,4 +27,11 @@ describe('quote-based day guide', () => {
     expect(totalLodgingSurchargeWon).toBe(110_000)
     expect(dayGuides[4].lodging?.complimentaryUpgrade).toBe(true)
   })
+
+  it('uses the confirmed meal changes from the team schedule', () => {
+    expect(dayGuides[0].meals.dinner).toBe('캠프식')
+    expect(dayGuides[1].meals.breakfast).toBe('캠프식')
+    expect(dayGuides[2].meals.dinner).toBe('특식(삼계탕)')
+    expect(dayGuides[4].meals.dinner).toBe('현지 식당')
+  })
 })

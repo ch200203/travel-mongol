@@ -23,7 +23,7 @@ export function TripHeader({ data, mutate }: Props) {
 
   return (
     <header className="trip-header">
-      <div className="eyebrow">MONGOLIAN TRIP</div>
+      <div className="eyebrow">GOBI · TERELJ · 5 NIGHTS 6 DAYS</div>
       <div className="trip-title-row">
         <div><h1>{data.trip.name}</h1><p>{period}</p></div>
         <button className="ghost compact" onClick={() => setEditing(!editing)} aria-expanded={editing}>역할 설정</button>
@@ -37,7 +37,8 @@ export function TripHeader({ data, mutate }: Props) {
         <span><small>차량</small><strong>하이에스</strong></span>
         <span><small>1인 예약금</small><strong>21만원 · 완료</strong></span>
         <span><small>1인 현지 잔금</small><strong>95만원</strong></span>
-        <span><small>1인 총액</small><strong>116만원</strong></span>
+        <span><small>1인 숙소 추가</small><strong>11만원</strong></span>
+        <span><small>1인 예상 총액</small><strong>127만원</strong></span>
       </div>
       {editing && (
         <form className="role-form" onSubmit={(event) => { event.preventDefault(); void submit(event.currentTarget) }}>

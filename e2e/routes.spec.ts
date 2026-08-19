@@ -3,14 +3,15 @@ import { expect, test } from '@playwright/test'
 const routes = [
   ['/expenses', '공동 장부'],
   ['/preparation', '준비물'],
-  ['/itinerary', '여행 일정'],
+  ['/itinerary', '별고비팀 세부 일정'],
   ['/album', '여행 앨범'],
+  ['/guide', '별고비팀 여행 안내'],
 ] as const
 
 for (const [route, heading] of routes) {
   test(`${route} 직접 접근이 SPA에서 복원된다`, async ({ page }) => {
     await page.goto(route)
-    await expect(page).toHaveTitle('고비, 테를지 5박 6일 여행')
+    await expect(page).toHaveTitle('별고비팀 · 고비사막+테를지 5박 6일')
     await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible()
     await expect(page.getByText('이 기기에 저장')).toBeVisible()
   })
@@ -54,15 +55,18 @@ test('360px 일정 화면에 해·별 시간과 이동·숙소 정보를 표시�
   await expect(page.getByText('2,000km', { exact: true })).toBeVisible()
   await expect(page.getByText('9/9 05:00', { exact: true })).toBeVisible()
   await expect(page.getByText('9/14 16:00', { exact: true })).toBeVisible()
-  await expect(page.getByText('11만원', { exact: true })).toBeVisible()
+  await expect(page.getByLabel('고비사막부터 테를지까지').getByText('11만원', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '별고비팀', exact: true })).toBeVisible()
   const firstDayGuide = page.locator('.day-guide-card').first()
   await expect(firstDayGuide.getByRole('heading', { name: '차강소브라가', exact: true })).toBeVisible()
   await expect(firstDayGuide.getByText('1인 +5만원', { exact: true })).toBeVisible()
   await expect(firstDayGuide.getByText('✓ 전기 가능', { exact: true })).toBeVisible()
   await expect(firstDayGuide.getByText('✓ 인터넷 가능', { exact: true })).toBeVisible()
   await expect(firstDayGuide.getByText('✓ 샤워 가능', { exact: true })).toBeVisible()
-  const cancelled = page.locator('.schedule-item.cancelled').filter({ hasText: '바가가즈린촐로 투어' })
-  await expect(cancelled.getByText('취소', { exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '노을 및 일몰 감상' })).toBeVisible()
+  await expect(page.getByText('특식: 삼계탕 · 은하수 헌팅', { exact: true })).toBeVisible()
+  await expect(page.getByText('15:00 공항 샌딩', { exact: true })).toBeVisible()
+  await expect(page.getByText('16:00 공항 도착', { exact: true })).toBeVisible()
 
   await page.locator('.tour-operator summary').click()
   await expect(page.getByRole('link', { name: '홈페이지 ↗' })).toHaveAttribute('href', 'https://www.yeonatour.com/')
@@ -79,6 +83,16 @@ test('상단 탭과 결제 단계 완료 상태를 표시한다', async ({ page 
   expect((await nav.boundingBox())?.y).toBeLessThan((await heading.boundingBox())?.y ?? 0)
   await expect(page.getByText('1인 21만원')).toBeVisible()
   await expect(page.getByText('6/6명 완료')).toBeVisible()
+})
+
+test('안내 페이지에서 공항 미팅과 긴급 연락처를 확인한다', async ({ page }) => {
+  await page.goto('/guide')
+  await expect(page.getByText('9월 9일 05:00', { exact: true })).toBeVisible()
+  await expect(page.getByText('탐앤탐스 카페 앞', { exact: true })).toBeVisible()
+  await expect(page.getByRole('img', { name: '울란바토르 국제공항 국제선 도착장 옆 탐앤탐스 카페 미팅 장소' })).toBeVisible()
+  await expect(page.getByRole('link', { name: '공항 미팅 장소 사진 크게 보기' })).toHaveAttribute('target', '_blank')
+  await expect(page.getByRole('link', { name: '+82-2-3210-0404' })).toHaveAttribute('href', 'tel:+82232100404')
+  await expect(page.getByText('GobiSuntravel', { exact: true })).toBeVisible()
 })
 
 test('첫 화면은 일정이며 공통/개인 준비가 분류된다', async ({ page }) => {

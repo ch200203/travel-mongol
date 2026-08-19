@@ -2,12 +2,12 @@
 
 ## Source of truth
 - Status: Active
-- Last refreshed: 2026-08-18
-- Primary product surfaces: 여행 헤더, 일정, 준비물, 정산, 앨범
-- Evidence reviewed: `README.md`, `docs/PROJECT_PLAN.md`, `docs/4. 여나투어 고비테를지 5박6일 견적안내.pdf`, `docs/4. 여나투어 고비사막 숙소 사진.pdf`, `src/app/App.tsx`, `src/features/itinerary/ItineraryPage.tsx`, `src/styles/global.css`
+- Last refreshed: 2026-08-19
+- Primary product surfaces: 여행 헤더, 일정, 준비물, 정산, 앨범, 여행 안내
+- Evidence reviewed: `README.md`, `docs/PROJECT_PLAN.md`, `docs/4. 여나투어 고비테를지 5박6일 견적안내.pdf`, `docs/4. 여나투어 고비사막 숙소 사진.pdf`, `docs/별고비팀 세부일정.jpeg`, `docs/안내사항_정리.md`, `docs/탐앤탐스.png`, `src/app/App.tsx`, `src/features/itinerary/ItineraryPage.tsx`, `src/styles/global.css`
 
 ## Brand
-- Personality: 함께 여행하는 사람들이 쓰는 따뜻하고 실용적인 몽골 여행 수첩
+- Personality: 별과 고비를 함께 여행하는 `별고비팀`의 따뜻하고 실용적인 여행 수첩
 - Trust signals: 견적서와 여행팀의 최신 변경안 기반 정보, 확정·제안·취소 상태, 현지 변동 가능성 안내
 - Avoid: 여행사 광고처럼 보이는 과장, 확인되지 않은 숙소 확정 표현, 장식 때문에 핵심 일정이 묻히는 화면
 
@@ -22,8 +22,8 @@
 - Key contexts of use: 출발 전 모바일 확인, 이동 중 느린 네트워크, 현지 숙소 도착 전 편의시설 확인
 
 ## Information architecture
-- Primary navigation: 일정, 준비물, 정산, 앨범의 상단 고정 탭
-- Core routes/screens: `/itinerary`, `/preparation`, `/expenses`, `/album`
+- Primary navigation: 일정, 준비물, 정산, 앨범, 안내의 상단 고정 탭
+- Core routes/screens: `/itinerary`, `/preparation`, `/expenses`, `/album`, `/guide`
 - Content hierarchy: 전체 여행 요약 → 항공편/날씨 → 일차별 이동·식사·숙소 요약 → 시간순 세부 일정 → 별 관측 정보
 
 ## Design principles
@@ -37,11 +37,11 @@
 - Spacing/layout rhythm: 기존 0.55~1rem 카드 간격과 12~16px 반경을 재사용한다.
 - Shape/radius/elevation: 기존 일정 카드보다 한 단계 높은 요약 카드에 얕은 테두리와 배경 대비를 사용한다.
 - Motion: 새 애니메이션을 추가하지 않는다.
-- Imagery/iconography: 별도 이미지 의존 없이 짧은 텍스트 아이콘과 명시적 라벨을 함께 사용한다.
+- Imagery/iconography: 이미지는 현장 식별에 도움이 될 때만 사용한다. 미팅 장소 사진은 관련 안내 바로 옆에 두고, 구체적인 시각 표식과 대체 텍스트를 함께 제공한다.
 
 ## Components
 - Existing components to reuse: `ItineraryPage`, `day-group`, `schedule-item`, `subheading`
-- New/changed components: 전체 이동 요약, 접이식 투어사 연락처, `DayGuideCard`, 편의시설 배지, 숙소 상세 `<details>`
+- New/changed components: 전체 이동 요약, 접이식 투어사 연락처, `DayGuideCard`, 편의시설 배지, 숙소 상세 `<details>`, 안내 요약 카드와 주제별 `<details>`
 - Variants and states: 고급 캠프(유료/무료 업그레이드), 여행자 캠프, 숙박 없음(6일차), 편의시설 가능, 현지 제한 주의
 - Token/component ownership: 일정 전용 스타일은 `src/styles/global.css`, 일정 안내 데이터는 `src/features/itinerary/dayGuide.ts`
 
@@ -73,7 +73,7 @@
 ## Implementation constraints
 - Framework/styling system: React 19, TypeScript, Vite, 단일 전역 CSS
 - Design-token constraints: 기존 CSS 변수와 컴포넌트 패턴을 우선하며 새 디자인 시스템을 만들지 않는다.
-- Performance constraints: PDF 이미지나 외부 숙소 이미지를 번들에 추가하지 않는다.
+- Performance constraints: PDF나 외부 숙소 이미지는 번들에 추가하지 않으며, 현장 식별에 필요한 검증된 미팅 장소 사진만 예외로 사용한다.
 - Compatibility constraints: Supabase와 localStorage 모드 모두 동일한 안내를 보여준다.
 - Test/screenshot expectations: 안내 데이터 완전성 테스트, lint, typecheck, unit test, production build를 통과한다.
 

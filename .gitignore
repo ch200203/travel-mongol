@@ -5,6 +5,9 @@ coverage/
 .env.*
 !.env.example
 docs/*.pdf
+# Private/raw tour reference files; commit only sanitized or optimized derivatives.
+docs/안내사항_정리.md
+docs/탐앤탐스.png
 playwright-report/
 test-results/
 .DS_Store

@@ -1,7 +1,7 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = extensions, public;
-select plan(25);
+select plan(29);
 
 select ok(has_table_privilege('anon', 'api.trips', 'select'), 'anon can read trips');
 select ok(not has_table_privilege('anon', 'api.trips', 'insert'), 'anon cannot create trips');
@@ -35,6 +35,10 @@ select is((select count(*) from api.common_preparation_checks), 48::bigint, 'eve
 select is((select count(*) from api.personal_preparation_items where is_recommended), 144::bigint, 'each member receives 24 recommended personal items');
 select is((select count(*) from api.shared_funds), 1::bigint, 'seed has one shared travel fund');
 select is((select count(*) from api.fund_contributions), 0::bigint, 'fund starts without fabricated contributions');
+select is((select name from api.trips limit 1), '별고비팀', 'seed uses the confirmed team name');
+select is((select count(*) from api.itinerary_items where title = '바가가즈린촐로 투어'), 0::bigint, 'removed destination is absent');
+select is((select count(*) from api.itinerary_items where day_number = 4 and title = '노을 및 일몰 감상'), 1::bigint, 'Day 4 includes sunset viewing');
+select is((select count(*) from api.itinerary_items where day_number = 6 and start_time in ('15:00', '16:00')), 2::bigint, 'Day 6 includes airport transfer and arrival');
 
 select * from finish();
 rollback;

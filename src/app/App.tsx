@@ -4,6 +4,7 @@ import { PreparationPage } from '../features/preparation/PreparationPage'
 import { ItineraryPage } from '../features/itinerary/ItineraryPage'
 import { TripHeader } from '../features/trip/TripHeader'
 import { AlbumPage } from '../features/album/AlbumPage'
+import { GuidePage } from '../features/guide/GuidePage'
 import { useTripData } from './useTripData'
 
 const tabs = [
@@ -11,6 +12,7 @@ const tabs = [
   ['/preparation', '준비물', '✓'],
   ['/expenses', '정산', '₩'],
   ['/album', '앨범', '▧'],
+  ['/guide', '안내', 'ⓘ'],
 ]
 
 export function App() {
@@ -45,6 +47,7 @@ export function App() {
           <Route path="/preparation" element={<PreparationPage data={data} mutate={state.mutate} />} />
           <Route path="/itinerary" element={<ItineraryPage data={data} mutate={state.mutate} />} />
           <Route path="/album" element={<AlbumPage data={data} />} />
+          <Route path="/guide" element={<GuidePage />} />
           <Route path="*" element={<Navigate to="/itinerary" replace />} />
         </Routes>
       </main>

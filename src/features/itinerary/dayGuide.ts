@@ -41,7 +41,7 @@ export const dayGuides: DayGuide[] = [
     destination: '차강소브라가',
     drivingHours: 8,
     drivingKm: 450,
-    meals: { breakfast: '불포함', lunch: '현지 식당', dinner: '특식(삼겹살)' },
+    meals: { breakfast: '불포함', lunch: '현지 식당', dinner: '캠프식' },
     lodging: {
       name: '고급 캠프',
       roomType: '게르형 객실',
@@ -50,14 +50,14 @@ export const dayGuides: DayGuide[] = [
       amenities: travelerCampAmenities,
       features: [...premiumCampFeatures, '차강소브라가 일몰 후 캠프에서 숙박해요.'],
     },
-    highlights: ['차강소브라가에서는 운동화 필수', '마트 장보기'],
+    highlights: ['차강소브라가에서는 운동화 필수', '마트 장보기', '05:00 공항 미팅'],
   },
   {
     day: 2,
     destination: '욜링암',
     drivingHours: 5,
     drivingKm: 320,
-    meals: { breakfast: '가이드 요리', lunch: '현지 식당', dinner: '특식(허르헉)' },
+    meals: { breakfast: '캠프식', lunch: '현지 식당', dinner: '특식(허르헉)' },
     lodging: {
       name: '고급 캠프',
       roomType: '게르형 객실',
@@ -73,7 +73,7 @@ export const dayGuides: DayGuide[] = [
     destination: '홍고린엘스',
     drivingHours: 5,
     drivingKm: 300,
-    meals: { breakfast: '가이드 요리', lunch: '캠프식', dinner: '가이드 요리' },
+    meals: { breakfast: '가이드 요리', lunch: '캠프식', dinner: '특식(삼계탕)' },
     lodging: {
       name: '고급 캠프',
       roomType: '오두막',
@@ -98,14 +98,14 @@ export const dayGuides: DayGuide[] = [
       amenities: travelerCampAmenities,
       features: [...travelerCampFeatures, '여행자 캠프의 오두막 객실에서 숙박해요.'],
     },
-    highlights: ['바양작 투어', '오후 캠프 휴식'],
+    highlights: ['바양작 투어', '일몰 감상 20:00~20:30'],
   },
   {
     day: 5,
     destination: '테를지',
     drivingHours: 8,
     drivingKm: 690,
-    meals: { breakfast: '가이드 요리', lunch: '현지 식당', dinner: '가이드 요리' },
+    meals: { breakfast: '가이드 요리', lunch: '현지 식당', dinner: '현지 식당' },
     lodging: {
       name: '고급 캠프',
       roomType: '상위 등급 객실',
@@ -123,7 +123,7 @@ export const dayGuides: DayGuide[] = [
     drivingKm: 80,
     meals: { breakfast: '캠프식', lunch: '현지 식당', dinner: '투어 종료 후 개별' },
     lodging: null,
-    highlights: ['징기스칸 기마 동상', '시내 투어', '공항 샌딩'],
+    highlights: ['징기스칸 기마 동상', '시내 투어', '15:00 공항 샌딩', '16:00 공항 도착'],
   },
 ]
 

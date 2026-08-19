@@ -74,25 +74,43 @@ function personalSeed(): PersonalItem[] {
   })))
 }
 
-const itinerarySeed: Array<[number, string, string, string]> = [
-  [1, '05:00', '차강소브라가', '오전 5시 공항 미팅 · 하이에스 이동 · 차강소브라가 일몰'],
-  [2, '08:00', '욜링암', '욜링암 투어 · 캠프파이어와 은하수 헌팅 선택'],
-  [3, '08:00', '홍고린엘스', '고비사막 투어 · 모래썰매 · 낙타 체험'],
-  [4, '09:00', '바양작', '바양작 투어 후 여행자 캠프 숙박'],
-  [5, '07:00', '테를지', '테를지 국립공원 · 아리야발 사원 · 거북바위 · 승마 체험'],
-  [6, '08:00', '울란바토르', '징기스칸 기마 동상 · 시내 투어 · 공항 샌딩'],
+type ItinerarySeed = Omit<ItineraryItem, 'id' | 'trip_id'>
+
+const itinerarySeed: ItinerarySeed[] = [
+  { day_number: 1, start_time: '05:00', end_time: null, title: '공항 미팅 후 출발', location: 'UBN 공항', note: '별고비팀 미팅 후 차강소브라가로 이동', link_url: null, status: 'confirmed', source: 'manual', sort_order: 0 },
+  { day_number: 1, start_time: '10:00', end_time: null, title: '마트 장보기', location: null, note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
+  { day_number: 1, start_time: '11:00', end_time: null, title: '점심 식사', location: null, note: '현지 식당', link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
+  { day_number: 1, start_time: '16:00', end_time: null, title: '차강소브라가 투어', location: '차강소브라가', note: '운동화 필수', link_url: null, status: 'proposed', source: 'manual', sort_order: 3 },
+  { day_number: 1, start_time: '17:00', end_time: null, title: '숙소 도착', location: '고급 캠프', note: '1인 숙소 추가금 5만원', link_url: null, status: 'proposed', source: 'manual', sort_order: 4 },
+  { day_number: 1, start_time: '18:00', end_time: null, title: '저녁 식사', location: '고급 캠프', note: '캠프식', link_url: null, status: 'proposed', source: 'manual', sort_order: 5 },
+  { day_number: 2, start_time: '08:00', end_time: null, title: '숙소 출발', location: null, note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 0 },
+  { day_number: 2, start_time: '11:00', end_time: null, title: '점심 식사', location: null, note: '현지 식당', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
+  { day_number: 2, start_time: '15:00', end_time: null, title: '욜링암 투어', location: '욜링암', note: '입구 플리마켓 이용 가능', link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
+  { day_number: 2, start_time: '17:00', end_time: null, title: '숙소 도착 및 저녁 식사', location: '고급 캠프', note: '특식: 허르헉 · 캠프파이어 · 은하수 헌팅', link_url: null, status: 'proposed', source: 'manual', sort_order: 3 },
+  { day_number: 3, start_time: '08:00', end_time: null, title: '숙소 출발', location: null, note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 0 },
+  { day_number: 3, start_time: '12:00', end_time: null, title: '숙소 도착 및 점심 식사', location: '고급 캠프(오두막)', note: '캠프식 · 1인 숙소 추가금 3만원', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
+  { day_number: 3, start_time: '15:00', end_time: null, title: '고비사막 투어', location: '홍고린엘스', note: '모래 썰매 · 낙타 체험', link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
+  { day_number: 3, start_time: '18:00', end_time: null, title: '저녁 식사', location: '고급 캠프(오두막)', note: '특식: 삼계탕 · 은하수 헌팅', link_url: null, status: 'proposed', source: 'manual', sort_order: 3 },
+  { day_number: 4, start_time: '09:00', end_time: null, title: '숙소 출발', location: null, note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 0 },
+  { day_number: 4, start_time: '12:00', end_time: null, title: '점심 식사', location: null, note: '현지 식당', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
+  { day_number: 4, start_time: '13:00', end_time: null, title: '바양작 투어', location: '바양작', note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
+  { day_number: 4, start_time: '17:00', end_time: null, title: '숙소 도착', location: '여행자 캠프(오두막)', note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 3 },
+  { day_number: 4, start_time: '18:00', end_time: null, title: '저녁 식사', location: '여행자 캠프(오두막)', note: '가이드 요리', link_url: null, status: 'proposed', source: 'manual', sort_order: 4 },
+  { day_number: 4, start_time: '19:00', end_time: null, title: '노을 및 일몰 감상', location: '바양작', note: '일몰 예상 시간 20:00~20:30', link_url: null, status: 'proposed', source: 'manual', sort_order: 5 },
+  { day_number: 5, start_time: '07:00', end_time: null, title: '숙소 출발', location: null, note: '테를지까지 장거리 이동', link_url: null, status: 'proposed', source: 'manual', sort_order: 0 },
+  { day_number: 5, start_time: '12:00', end_time: null, title: '점심 식사', location: null, note: '현지 식당', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
+  { day_number: 5, start_time: '16:00', end_time: null, title: '테를지 국립공원 투어', location: '테를지', note: '아리야발 사원 · 거북바위 · 승마 체험 · 독수리 체험 추가 가능', link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
+  { day_number: 5, start_time: '18:00', end_time: null, title: '숙소 도착', location: '고급 캠프', note: '무료 업그레이드', link_url: null, status: 'proposed', source: 'manual', sort_order: 3 },
+  { day_number: 5, start_time: '19:00', end_time: null, title: '저녁 식사', location: '현지 식당', note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 4 },
+  { day_number: 6, start_time: '08:00', end_time: null, title: '숙소 출발', location: null, note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 0 },
+  { day_number: 6, start_time: '09:00', end_time: null, title: '징기스칸 기마 동상 방문', location: '징기스칸 기마 동상', note: '박물관 입장 추가 비용', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
+  { day_number: 6, start_time: '12:00', end_time: null, title: '점심 식사 및 시내 투어', location: '울란바토르', note: '수흐바타르 광장 · 국영백화점 · 캐시미어 매장', link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
+  { day_number: 6, start_time: '15:00', end_time: null, title: '공항 샌딩', location: '울란바토르 → UBN', note: '시내에서 공항으로 이동', link_url: null, status: 'confirmed', source: 'manual', sort_order: 3 },
+  { day_number: 6, start_time: '16:00', end_time: null, title: '공항 도착 및 투어 종료', location: 'UBN 공항', note: '별고비팀 투어 종료', link_url: null, status: 'confirmed', source: 'manual', sort_order: 4 },
 ]
 
-const bagaItem: ItineraryItem = {
-  id: 'local-itinerary-baga-cancelled', trip_id: tripId, title: '바가가즈린촐로 투어', day_number: 1,
-  start_time: '10:00', end_time: null, location: '바가가즈린촐로', note: '변경된 일정에서 제외', link_url: null,
-  status: 'cancelled', source: 'quote_pdf', sort_order: 1,
-}
-
-const tourEndItem: ItineraryItem = {
-  id: 'local-itinerary-tour-end', trip_id: tripId, title: '시내 투어 종료 및 공항 샌딩', day_number: 6,
-  start_time: '16:00', end_time: null, location: '울란바토르 → UBN', note: '오후 4시 시내 투어 종료 후 공항으로 이동', link_url: null,
-  status: 'confirmed', source: 'manual', sort_order: 98,
+function itinerarySeedRows(): ItineraryItem[] {
+  return itinerarySeed.map((item, index) => ({ ...item, id: `local-schedule-${index + 1}`, trip_id: tripId }))
 }
 
 const flightItems: ItineraryItem[] = [
@@ -114,7 +132,7 @@ function initialData(): TripData {
   const data: TripData = {
     trip: {
       id: tripId,
-      name: '고비, 테를지 5박 6일 여행',
+      name: '별고비팀',
       start_date: '2026-09-09',
       end_date: '2026-09-14',
       leader_member_id: null,
@@ -131,20 +149,7 @@ function initialData(): TripData {
       completed_at: task.id === 'local-common-deposit' ? '2026-08-18T00:00:00+09:00' : null,
     }))),
     personalItems: personalSeed(),
-    itinerary: [...flightItems, bagaItem, tourEndItem, ...itinerarySeed.map<ItineraryItem>(([day, time, title, note], index) => ({
-      id: `local-itinerary-${day}`,
-      trip_id: tripId,
-      title,
-      day_number: day,
-      start_time: time,
-      end_time: null,
-      location: title,
-      note,
-      link_url: null,
-      status: 'proposed',
-      source: 'quote_pdf',
-      sort_order: index,
-    }))],
+    itinerary: [...flightItems, ...itinerarySeedRows()],
     sharedFunds: [{ id: 'local-shared-fund', trip_id: tripId, name: '여행 공금', target_amount: 0, currency: 'KRW' }],
     fundContributions: [],
   }
@@ -173,22 +178,16 @@ export function loadLocalData(): TripData {
       data.trip.end_date = '2026-09-14'
       changed = true
     }
-    if (data.trip.name !== '고비, 테를지 5박 6일 여행') {
-      data.trip.name = '고비, 테를지 5박 6일 여행'
+    if (data.trip.name !== '별고비팀') {
+      data.trip.name = '별고비팀'
       changed = true
     }
     for (const flight of flightItems) {
       if (!data.itinerary.some((item) => item.id === flight.id)) { data.itinerary.push(flight); changed = true }
     }
-    const storedTourEnd = data.itinerary.find((item) => item.id === tourEndItem.id)
-    if (!storedTourEnd) { data.itinerary.push({ ...tourEndItem }); changed = true }
-    else if (storedTourEnd.start_time !== tourEndItem.start_time || storedTourEnd.note !== tourEndItem.note) { Object.assign(storedTourEnd, tourEndItem); changed = true }
-    const storedBagaItem = data.itinerary.find((item) => item.id === bagaItem.id)
-    if (!storedBagaItem) {
-      data.itinerary.push({ ...bagaItem })
-      changed = true
-    } else if (storedBagaItem.status !== bagaItem.status || storedBagaItem.note !== bagaItem.note) {
-      Object.assign(storedBagaItem, { status: bagaItem.status, note: bagaItem.note })
+    if (!data.itinerary.some((item) => item.id === 'local-schedule-1')) {
+      data.itinerary = data.itinerary.filter((item) => !/^local-itinerary-[1-6]$/.test(item.id) && item.id !== 'local-itinerary-baga-cancelled' && item.id !== 'local-itinerary-tour-end')
+      data.itinerary.push(...itinerarySeedRows())
       changed = true
     }
     if (!tasks.every((task) => data.tasks.some((item) => item.id === task.id))) {
@@ -229,22 +228,6 @@ export function loadLocalData(): TripData {
         data.personalItems.push(recommendation)
         changed = true
       }
-    }
-    const firstDay = data.itinerary.find((item) => item.id === 'local-itinerary-1')
-    if (firstDay && firstDay.title.includes('바가가즈린촐로')) {
-      firstDay.title = '차강소브라가'
-      firstDay.location = '차강소브라가'
-      firstDay.note = '하이에스 이동 · 공항 미팅 후 출발 · 차강소브라가 일몰'
-      changed = true
-    }
-    if (firstDay && !firstDay.note?.includes('하이에스')) {
-      firstDay.note = `하이에스 이동 · ${firstDay.note ?? ''}`.trim()
-      changed = true
-    }
-    if (firstDay && (firstDay.start_time !== '05:00' || !firstDay.note?.includes('오전 5시 공항 미팅'))) {
-      firstDay.start_time = '05:00'
-      firstDay.note = '오전 5시 공항 미팅 · 하이에스 이동 · 차강소브라가 일몰'
-      changed = true
     }
     if (changed) saveLocalData(data)
     return data
