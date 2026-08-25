@@ -6,6 +6,7 @@ export function WeatherPanel() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const available = forecastAvailable()
+  const pending = weatherLocations.filter((place) => !weather.some((day) => day.day === place.day))
 
   const load = useCallback(async (signal?: AbortSignal) => {
     if (!available) return
@@ -27,7 +28,8 @@ export function WeatherPanel() {
     {!available ? <div className="forecast-pending"><strong>8월 25일부터 상세 예보를 확인할 수 있어요.</strong><p>Open-Meteo의 실시간 예보 범위는 최대 16일입니다. 이 화면은 출발일이 범위에 들어오면 자동으로 기온·강수확률·바람을 표시합니다.</p><div>{weatherLocations.map((place) => <span key={place.day}>Day {place.day}<b>{place.location}</b></span>)}</div></div>
       : error ? <div className="empty"><p>{error}</p><button onClick={() => void load()}>다시 시도</button></div>
       : loading && weather.length === 0 ? <div className="empty">최신 예보를 불러오는 중…</div>
-      : <div className="weather-grid">{weather.map((day) => { const condition = weatherLabel(day.code); return <article key={day.day}><header><span>Day {day.day}</span><b>{day.location}</b></header><div className="weather-main"><span aria-hidden="true">{condition.icon}</span><strong>{Math.round(day.temperatureMax)}°</strong><small>{condition.text}</small></div><p>최저 {Math.round(day.temperatureMin)}° · 비 {day.precipitationProbability}%</p><p>최대 풍속 {Math.round(day.windSpeedMax)} km/h</p></article> })}</div>}
+      : <><div className="weather-grid">{weather.map((day) => { const condition = weatherLabel(day.code); return <article key={day.day}><header><span>Day {day.day}</span><b>{day.location}</b></header><div className="weather-main"><span aria-hidden="true">{condition.icon}</span><strong>{Math.round(day.temperatureMax)}°</strong><small>{condition.text}</small></div><p>최저 {Math.round(day.temperatureMin)}° · 비 {day.precipitationProbability}%</p><p>최대 풍속 {Math.round(day.windSpeedMax)} km/h</p></article> })}</div>
+        {pending.length > 0 && <p className="astronomy-note">Day {pending.map((place) => place.day).join(', ')}은(는) 아직 16일 예보 범위 밖이라 날짜가 가까워지면 순차적으로 표시됩니다.</p>}</>}
     <a className="weather-source" href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather data by Open-Meteo ↗</a>
   </section>
 }
