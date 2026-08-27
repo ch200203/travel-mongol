@@ -10,4 +10,6 @@ docs/안내사항_정리.md
 docs/탐앤탐스.png
 playwright-report/
 test-results/
+# Local agent tooling state, not part of the project.
+.omc/
 .DS_Store
