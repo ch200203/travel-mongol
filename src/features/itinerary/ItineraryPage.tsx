@@ -4,6 +4,7 @@ import type { ItineraryItem, TripData } from '../../lib/types'
 import { dateForDay } from '../../lib/tripLogic'
 import { FlightPanel } from './FlightPanel'
 import { WeatherPanel } from './WeatherPanel'
+import { RouteMapPanel } from './RouteMapPanel'
 import { AstronomyDayCard } from './AstronomyPanel'
 import { buildSkySchedule } from './astronomy'
 import { dayGuides, lodgingCaution, totalDriving, totalLodgingSurchargeWon, type DayGuide } from './dayGuide'
@@ -53,6 +54,7 @@ export function ItineraryPage({ data, mutate }: Props) {
       <summary><span>투어사 정보</span><strong>여나투어</strong></summary>
       <div><p>견적 및 현지 일정 관련 문의가 필요할 때 이용하세요.</p><nav aria-label="여나투어 연락처"><a href="https://www.yeonatour.com/" target="_blank" rel="noreferrer">홈페이지 ↗</a><a href="https://pf.kakao.com/_TxnGHG/chat" target="_blank" rel="noreferrer">카카오채널 상담 ↗</a></nav></div>
     </details>
+    <RouteMapPanel />
     <WeatherPanel />
     {showForm && <ItineraryForm item={editing} onSubmit={submit} onCancel={() => { setShowForm(false); setEditing(null) }} />}
     <div className="timeline">{[1, 2, 3, 4, 5, 6].map((day) => {
