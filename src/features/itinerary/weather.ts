@@ -9,12 +9,22 @@ export interface WeatherDay {
   windSpeedMax: number
 }
 
+/**
+ * 좌표는 OpenStreetMap(Nominatim)과 위키피디아에서 확인한 실제 방문 지점 기준이다.
+ * Open-Meteo는 좌표에 해당하는 90m 수치표고모델로 기온을 자동 보정하므로 elevation은 넘기지 않는다.
+ */
 export const weatherLocations = [
-  { day: 1, date: '2026-09-09', location: '차강소브라가', latitude: 44.57, longitude: 105.75 },
-  { day: 2, date: '2026-09-10', location: '욜링암', latitude: 43.47, longitude: 104.08 },
-  { day: 3, date: '2026-09-11', location: '홍고린엘스', latitude: 43.75, longitude: 102.27 },
-  { day: 4, date: '2026-09-12', location: '바양작', latitude: 44.14, longitude: 103.72 },
-  { day: 5, date: '2026-09-13', location: '테를지', latitude: 47.99, longitude: 107.46 },
+  // OSM monument node '차강소브라가' (Өлзийт, Дундговь)
+  { day: 1, date: '2026-09-09', location: '차강소브라가', latitude: 44.58, longitude: 105.72 },
+  // 위키피디아 43°29′35″N 104°05′02″E, OSM 트레일 시작점과 일치
+  { day: 2, date: '2026-09-10', location: '욜링암', latitude: 43.49, longitude: 104.08 },
+  // 사구가 동서로 길어 관광 전망대·캠프가 모인 서쪽 구간 기준
+  { day: 3, date: '2026-09-11', location: '홍고린엘스', latitude: 43.78, longitude: 102.18 },
+  // 위키피디아 Flaming Cliffs 44°08′19″N 103°43′40″E
+  { day: 4, date: '2026-09-12', location: '바양작', latitude: 44.14, longitude: 103.73 },
+  // 공원 전체가 아니라 Day 5 일정지인 거북바위(Мэлхий хад)·아리야발 사원 일대.
+  // 107.43은 능선(1707m)에 걸려 기온이 낮게 보정되므로 캠프가 있는 계곡 바닥(1529m)을 쓴다.
+  { day: 5, date: '2026-09-13', location: '테를지', latitude: 47.91, longitude: 107.42 },
   { day: 6, date: '2026-09-14', location: '울란바토르', latitude: 47.92, longitude: 106.92 },
 ]
 
