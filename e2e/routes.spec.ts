@@ -32,10 +32,18 @@ test('360px 로컬 모드에서 비용을 저장한다', async ({ page }) => {
 })
 
 test('확정 항공편과 예보 가능 시점을 표시한다', async ({ page }) => {
+  const failedForecasts: number[] = []
+  page.on('response', (response) => {
+    if (response.url().includes('api.open-meteo.com') && !response.ok()) failedForecasts.push(response.status())
+  })
   await page.goto('/itinerary')
   await expect(page.getByText('OM 310', { exact: true })).toBeVisible()
   await expect(page.getByText('OM 307', { exact: true })).toBeVisible()
-  await expect(page.getByText('8월 25일부터 상세 예보를 확인할 수 있어요.')).toBeVisible()
+  // 출발일까지 남은 일수에 따라 대기 안내와 실제 예보 중 하나가 보이며, 어느 쪽이든 오류는 없어야 한다.
+  const panel = page.locator('.weather-panel')
+  await expect(panel.locator('.forecast-pending, .weather-grid article').first()).toBeVisible()
+  await expect(panel.getByText('날씨 예보를 불러오지 못했습니다.')).toHaveCount(0)
+  expect(failedForecasts).toEqual([])
 })
 
 test('360px 일정 화면에 해·별 시간과 이동·숙소 정보를 표시한다', async ({ page }) => {
