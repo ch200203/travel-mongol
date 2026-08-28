@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { deleteRow, insertRow, updateRow } from '../../lib/supabase/repository'
 import type { ItineraryItem, TripData } from '../../lib/types'
 import { dateForDay } from '../../lib/tripLogic'
@@ -6,6 +6,7 @@ import { FlightPanel } from './FlightPanel'
 import { WeatherPanel } from './WeatherPanel'
 import { RouteMapPanel } from './RouteMapPanel'
 import { AstronomyDayCard } from './AstronomyPanel'
+import { useNightSkies } from './stargazing'
 import { buildSkySchedule } from './astronomy'
 import { dayGuides, lodgingCaution, totalDriving, totalLodgingSurchargeWon, type DayGuide } from './dayGuide'
 
@@ -20,7 +21,8 @@ function actualDate(startDate: string | null, day: number) {
 export function ItineraryPage({ data, mutate }: Props) {
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<ItineraryItem | null>(null)
-  const skySchedule = buildSkySchedule(data.trip.start_date)
+  const skySchedule = useMemo(() => buildSkySchedule(data.trip.start_date), [data.trip.start_date])
+  const nightSkies = useNightSkies(skySchedule)
 
   async function submit(form: HTMLFormElement) {
     const values = new FormData(form)
@@ -66,7 +68,7 @@ export function ItineraryPage({ data, mutate }: Props) {
           <time>{item.start_time?.slice(0, 5) ?? '시간 미정'}{item.end_time && <small>— {item.end_time.slice(0, 5)}</small>}</time>
           <div><span className={`status ${item.status}`}>{item.status === 'confirmed' ? '확정' : item.status === 'cancelled' ? '취소' : '제안'}</span><h3>{item.title}</h3>{item.location && <p>⌖ {item.location}</p>}{item.note && <p className="note">{item.note}</p>}{item.link_url && <a href={item.link_url} target="_blank" rel="noreferrer">관련 링크 ↗</a>}</div>
           <div className="schedule-actions"><button className="text-button" onClick={() => beginEdit(item)}>수정</button><button className="text-button danger" onClick={() => void remove(item)}>삭제</button></div>
-        </article>)}<AstronomyDayCard day={skySchedule[day - 1]} /></div>
+        </article>)}<AstronomyDayCard day={skySchedule[day - 1]} night={nightSkies[day]} /></div>
       </section>
     })}</div>
     <p className="astronomy-note">별 관측 시간은 태양이 지평선 아래 18°로 내려간 천문박명 종료부터 다음 날 천문박명 시작까지예요. 산·지형·구름에 따라 실제 관측 조건은 달라질 수 있습니다. <a href="https://gml.noaa.gov/grad/solcalc/calcdetails.html" target="_blank" rel="noreferrer">계산 기준: NOAA Solar Calculator ↗</a></p>

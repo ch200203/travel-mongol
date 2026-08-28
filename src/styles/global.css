@@ -258,6 +258,21 @@ h1, h2, h3, p { margin-top: 0; }
 .star-window strong { color: #fff; white-space: nowrap; }
 .astronomy-content > p { margin: .6rem 0 .15rem; color: #d5dde1; font-size: .7rem; }
 .astronomy-content > small { color: #a9b6bc; font-size: .62rem; }
+.star-grade { display: flex; align-items: baseline; gap: .45rem; margin: .55rem 0 0 !important; padding: .42rem .6rem; border-radius: 8px; border-left: 3px solid currentColor; background: #ffffff0e; }
+.star-grade b { font-size: .74rem; }
+.star-grade small { color: #b6c2c8 !important; font-size: .62rem; }
+.star-grade.best { color: #86dcab; }
+.star-grade.good { color: #b7d9a4; }
+.star-grade.fair { color: #e6b86f; }
+.star-grade.poor { color: #e59b8e; }
+.cloud-bars { margin-top: .55rem; }
+.cloud-bar-row { display: flex; align-items: stretch; gap: .18rem; height: 52px; padding: .35rem .35rem .2rem; border-radius: 8px; background: #ffffff0b; }
+.cloud-bar-row span { display: flex; flex: 1; flex-direction: column; align-items: center; gap: .14rem; }
+/* 빈 트랙 = 맑음, 가득 찬 트랙 = 흐림. 구름 0%도 한눈에 읽히도록 트랙을 항상 그린다. */
+.cloud-bar-row i { display: flex; align-items: flex-end; width: 100%; flex: 1; border-radius: 3px; background: #ffffff12; overflow: hidden; }
+.cloud-bar-row b { width: 100%; border-radius: 3px 3px 0 0; background: linear-gradient(#f2f6f8, #8fa4af); }
+.cloud-bar-row small { color: #93a2aa; font-size: .5rem; line-height: 1; }
+.cloud-note { margin: .32rem 0 0 !important; color: #b6c2c8 !important; font-size: .62rem !important; }
 .astronomy-note { margin: 1rem 0 0; color: #68736e; font-size: .68rem; }
 .coming-badge { padding: .35rem .65rem; border: 1px solid #aeb5ae; border-radius: 99px; color: #657169; font-size: .72rem; }
 .album-notice { margin-bottom: 1rem; padding: 1rem; border-radius: 13px; color: white; background: linear-gradient(120deg, #315b4b, #19382f); }

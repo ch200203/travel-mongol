@@ -12,6 +12,10 @@ export interface SkyDay {
   location: string
   sunrise: string
   sunset: string
+  /** 천문박명 종료(관측 시작). starWindow는 표시용이고 계산에는 이 값을 쓴다. */
+  dusk: string
+  /** 다음 날 천문박명 시작(관측 종료). */
+  dawn: string
   starWindow: string
   moonIllumination: number
   moonLabel: string
@@ -118,6 +122,8 @@ export function buildSkySchedule(startDate: string | null): SkyDay[] {
       location: place.location,
       sunrise,
       sunset,
+      dusk: astronomicalDusk,
+      dawn: astronomicalDawn,
       starWindow: `${astronomicalDusk}–${astronomicalDawn}`,
       ...moonForDate(date),
     }
