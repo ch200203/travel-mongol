@@ -13,7 +13,7 @@ export function TripHeader({ data, mutate }: Props) {
   // 예약금 완료 여부는 준비물 탭의 결제 단계와 같은 체크 데이터에서 센다.
   const depositTask = data.tasks.find((task) => task.title.includes('예약금'))
   const depositDone = depositTask ? data.checks.filter((check) => check.task_id === depositTask.id && check.is_completed).length : 0
-  const depositLabel = depositDone === data.members.length ? '21만원 · 완료' : `21만원 · ${depositDone}/${data.members.length}명`
+  const depositLabel = data.members.length > 0 && depositDone === data.members.length ? '21만원 · 완료' : `21만원 · ${depositDone}/${data.members.length}명`
 
   const period = data.trip.start_date && data.trip.end_date
     ? `${data.trip.start_date} — ${data.trip.end_date}`

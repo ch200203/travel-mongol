@@ -56,3 +56,43 @@ test('온라인으로 돌아오면 오프라인 배지가 사라진다', async (
   await context.setOffline(false)
   await expect(page.getByText('오프라인', { exact: true })).toHaveCount(0)
 })
+
+test('오프라인이면 마지막으로 받은 예보를 출처와 함께 보여준다', async ({ page, context }) => {
+  // 먼저 온라인에서 예보를 한 번 받아 캐시를 채운다.
+  await page.goto('/itinerary')
+  await serviceWorkerReady(page)
+  await expect(page.locator('.weather-grid article').first()).toBeVisible({ timeout: 15_000 })
+
+  await context.setOffline(true)
+  await page.reload()
+
+  const panel = page.locator('.weather-panel')
+  // 캐시가 있으므로 에러가 아니라 예보가 그대로 나와야 한다.
+  await expect(panel.locator('.weather-grid article').first()).toBeVisible()
+  await expect(panel.locator('.stale-note')).toContainText('저장해 둔 값을 보여주고 있어요')
+  // 브라우저 영문 오류가 사용자에게 새어 나가지 않는다.
+  await expect(page.getByText('Failed to fetch')).toHaveCount(0)
+
+  await context.setOffline(false)
+})
+
+test('캐시가 없는 채로 오프라인이면 한국어 안내를 보여준다', async ({ page, context }) => {
+  // 한 번도 온라인으로 연 적 없으면 서비스워커가 없어 앱 자체가 열리지 않는다.
+  // 그래서 셸은 받아두고 예보 캐시만 비운 상태를 만든다.
+  await page.goto('/itinerary')
+  await serviceWorkerReady(page)
+  await page.evaluate(() => {
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith('mongolia-friends-trip:forecast:')) localStorage.removeItem(key)
+    }
+  })
+
+  await context.setOffline(true)
+  await page.reload()
+
+  const panel = page.locator('.weather-panel')
+  await expect(panel).toContainText('네트워크에 연결되어 있지 않아')
+  await expect(page.getByText('Failed to fetch')).toHaveCount(0)
+
+  await context.setOffline(false)
+})
