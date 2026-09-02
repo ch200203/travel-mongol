@@ -5,6 +5,7 @@ import { ItineraryPage } from '../features/itinerary/ItineraryPage'
 import { TripHeader } from '../features/trip/TripHeader'
 import { AlbumPage } from '../features/album/AlbumPage'
 import { GuidePage } from '../features/guide/GuidePage'
+import { InstallBanner } from '../features/pwa/InstallBanner'
 import { useTripData } from './useTripData'
 
 const tabs = [
@@ -51,6 +52,7 @@ export function App() {
           <Route path="*" element={<Navigate to="/itinerary" replace />} />
         </Routes>
       </main>
+      <InstallBanner />
     </div>
   )
 }

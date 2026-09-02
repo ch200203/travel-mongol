@@ -321,6 +321,15 @@ h1, h2, h3, p { margin-top: 0; }
 .camp-compare b { color: var(--forest); }
 .camp-compare p { margin: .2rem 0 0; color: #69736d; font-size: .7rem; }
 .guide-muted { padding: .65rem; border-radius: 9px; background: #f2ecdf; }
+body.has-install-banner .page { padding-bottom: 9rem; }
+.install-banner { position: fixed; left: .6rem; right: .6rem; bottom: calc(.6rem + env(safe-area-inset-bottom)); z-index: 20; display: flex; align-items: center; gap: .7rem; padding: .75rem .85rem; border-radius: 12px; color: #f4f1e6; background: #19382fef; box-shadow: 0 6px 20px #0003; }
+.install-banner strong { display: block; font-size: .74rem; }
+.install-banner p { margin: .2rem 0 0; color: #cdd9d1; font-size: .66rem; line-height: 1.5; }
+.install-banner b { color: var(--sand); }
+.install-banner-actions { display: flex; flex-shrink: 0; gap: .35rem; }
+.install-banner-actions button { padding: .4rem .6rem; font-size: .68rem; }
+.install-banner-actions .ghost { color: #cdd9d1; border-color: #6c8579; background: none; }
+@media (max-width: 420px) { .install-banner { flex-direction: column; align-items: stretch; } .install-banner-actions { justify-content: flex-end; } }
 .stale-note { margin: 0 0 .6rem; padding: .55rem .7rem; border-radius: 9px; color: #7a5a1c; background: #f6e5c2; font-size: .66rem; line-height: 1.5; }
 .offline-badge { padding: .2rem .45rem; border-radius: 99px; color: #7a3f16; background: #f3d9b5; font-size: .62rem; font-weight: 700; }
 .camp-utility-list { display: grid; gap: .4rem; margin: 0 0 .75rem; padding: 0; list-style: none; }
