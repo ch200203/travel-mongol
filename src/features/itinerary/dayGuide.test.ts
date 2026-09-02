@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dayGuides, hasUtilityLimit, totalDriving, totalLodgingSurchargeWon } from './dayGuide'
+import { dayGuides, hasUtilityLimit, isUtilityLimited, totalDriving, totalLodgingSurchargeWon } from './dayGuide'
 
 describe('quote-based day guide', () => {
   it('covers all six days and the quoted driving total', () => {
@@ -53,5 +53,21 @@ describe('quote-based day guide', () => {
   it('ends the tour with the final airport and boarding times', () => {
     expect(dayGuides[5].highlights).toContain('16:30 공항 도착')
     expect(dayGuides[5].highlights).toContain('18:15 비행기 탑승')
+  })
+
+  it('treats only a stated time window as a restriction', () => {
+    expect(isUtilityLimited('무제한')).toBe(false)
+    expect(isUtilityLimited('가능')).toBe(false)
+    expect(isUtilityLimited('23:00까지')).toBe(true)
+    expect(isUtilityLimited('18:00~23:00')).toBe(true)
+  })
+
+  it('agrees with the per-camp flag on every night', () => {
+    // 칩과 표가 같은 판정을 쓰는지 확인한다. 예전에는 화면마다 조건이 달랐다.
+    for (const guide of dayGuides) {
+      if (!guide.lodging) continue
+      const chipsSayLimited = isUtilityLimited(guide.lodging.utilities.power) || isUtilityLimited(guide.lodging.utilities.shower)
+      expect(hasUtilityLimit(guide.lodging)).toBe(chipsSayLimited)
+    }
   })
 })

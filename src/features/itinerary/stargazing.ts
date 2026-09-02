@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { SkyDay } from './astronomy'
 import { forecastRangeDays } from './weather'
 import { routeStops } from './routeMap'
+import { loadForecast, saveForecast } from '../../lib/forecastCache'
 
 export type StarGrade = '아주 좋음' | '좋음' | '보통' | '나쁨'
 
@@ -116,17 +117,37 @@ export async function fetchNightSkies(schedule: SkyDay[], signal?: AbortSignal):
   })
 }
 
+export interface NightSkyState {
+  nights: Record<number, NightSky>
+  /** 값이 있으면 등급이 이번에 받은 예보가 아니라 캐시에서 나온 것이다. */
+  cachedAt: number | null
+}
+
+const cacheKey = 'night-skies'
+
+function byDay(list: NightSky[]): Record<number, NightSky> {
+  return Object.fromEntries(list.map((night) => [night.day, night]))
+}
+
 /** 구름 예보는 6개 지점을 한 번에 받으므로 카드마다가 아니라 페이지에서 한 번만 호출한다. */
-export function useNightSkies(schedule: SkyDay[]): Record<number, NightSky> {
-  const [nights, setNights] = useState<Record<number, NightSky>>({})
+export function useNightSkies(schedule: SkyDay[]): NightSkyState {
+  const [state, setState] = useState<NightSkyState>({ nights: {}, cachedAt: null })
 
   useEffect(() => {
     const controller = new AbortController()
     fetchNightSkies(schedule, controller.signal)
-      .then((result) => setNights(Object.fromEntries(result.map((night) => [night.day, night]))))
-      .catch(() => { /* 구름은 부가 정보라, 실패해도 해·달 정보는 그대로 보여준다. */ })
+      .then((result) => {
+        saveForecast(cacheKey, result)
+        setState({ nights: byDay(result), cachedAt: null })
+      })
+      .catch((caught: unknown) => {
+        if (caught instanceof DOMException && caught.name === 'AbortError') return
+        // 구름은 부가 정보라 실패해도 해·달 정보는 그대로 두되, 마지막으로 받은 등급이 있으면 되살린다.
+        const cached = loadForecast<NightSky[]>(cacheKey)
+        if (cached && cached.data.length > 0) setState({ nights: byDay(cached.data), cachedAt: cached.savedAt })
+      })
     return () => controller.abort()
   }, [schedule])
 
-  return nights
+  return state
 }

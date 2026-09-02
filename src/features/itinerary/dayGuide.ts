@@ -145,9 +145,19 @@ export const totalDriving = dayGuides.reduce(
 
 export const totalLodgingSurchargeWon = dayGuides.reduce((total, day) => total + (day.lodging?.surchargeWon ?? 0), 0)
 
+/**
+ * 운영 시간이 적힌 값은 그 시간을 벗어나면 못 쓴다는 뜻이다.
+ * 판정은 반드시 여기 한 곳만 거쳐야 문구를 바꿔도 화면끼리 어긋나지 않는다.
+ */
+const unrestricted = ['무제한', '가능']
+
+export function isUtilityLimited(value: string): boolean {
+  return !unrestricted.includes(value)
+}
+
 /** 캠프 운영 시간이 정해진 날은 밤에 충전이 끊기므로 준비물 안내와 함께 강조한다. */
 export function hasUtilityLimit(lodging: LodgingGuide): boolean {
-  return lodging.utilities.power !== '무제한' || lodging.utilities.shower !== '무제한'
+  return isUtilityLimited(lodging.utilities.power) || isUtilityLimited(lodging.utilities.shower)
 }
 
 export const lodgingCaution = '숙소 등급과 객실 형태는 여행팀의 최신 변경안을 반영했어요. 실제 캠프명은 배정 후 확정되며, 오지 지역 특성상 전기·인터넷·온수 사용이 일시적으로 제한될 수 있어요.'

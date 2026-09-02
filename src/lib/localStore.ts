@@ -121,6 +121,11 @@ function itinerarySeedRows(): ItineraryItem[] {
   return itinerarySeed.map((item, index) => ({ ...item, id: `${scheduleSeedPrefix}-${index + 1}`, trip_id: tripId }))
 }
 
+/** 시드로 심은 공통 과제인지 판별한다. 사용자가 추가한 과제는 UUID라 여기에 걸리지 않는다. */
+function isSeededTask(id: string): boolean {
+  return id.startsWith('local-')
+}
+
 /** 시드로 심은 일정인지 판별한다. 사용자가 직접 추가한 일정은 UUID라 여기에 걸리지 않는다. */
 function isSeededSchedule(id: string): boolean {
   return /^local-schedule(-v\d+)?-\d+$/.test(id) || /^local-itinerary-/.test(id)
@@ -206,8 +211,9 @@ export function loadLocalData(): TripData {
     if (!tasks.every((task) => data.tasks.some((item) => item.id === task.id))) {
       const oldTasks = data.tasks
       const oldChecks = data.checks
-      const knownPattern = /여권|항공권 발권|예약금|현지 잔금|여행자보험|유심|개인 준비물 목록|운동화|항공편 시간|비상 연락처|노션|계약서|면책|승마|독수리 체험|기마 동상|점심 업그레이드/
-      const customTasks = oldTasks.filter((task) => !knownPattern.test(task.title) && !tasks.some((seed) => seed.id === task.id))
+      // 시드 과제는 항상 'local-' 접두사를 쓰고, 사용자가 추가한 과제는 crypto.randomUUID()를 받는다.
+      // 제목으로 가려내면 "승마 바지 사기" 같은 사용자 과제가 시드로 오인돼 사라진다.
+      const customTasks = oldTasks.filter((task) => !isSeededTask(task.id))
         .map((task, index) => ({ ...task, category: task.category ?? 'required' as const, sort_order: tasks.length + index }))
       const aliases: Record<string, RegExp> = {
         'local-common-passport': /여권/,
@@ -223,7 +229,7 @@ export function loadLocalData(): TripData {
         'local-common-lunch': /점심 업그레이드/,
       }
       const migratedChecks = tasks.flatMap((task) => data.members.map((member) => {
-        const oldTask = oldTasks.find((item) => aliases[task.id]?.test(item.title))
+        const oldTask = oldTasks.find((item) => isSeededTask(item.id) && aliases[task.id]?.test(item.title))
         const oldCheck = oldTask && oldChecks.find((item) => item.task_id === oldTask.id && item.member_id === member.id)
         const completed = task.id === 'local-common-deposit' || oldCheck?.is_completed === true
         return { trip_id: data.trip.id, task_id: task.id, member_id: member.id, is_completed: completed, completed_at: completed ? oldCheck?.completed_at ?? '2026-08-18T00:00:00+09:00' : null }
