@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { fetchTripWeather, forecastAvailable, weatherLabel, weatherLocations } from './weather'
+import { fetchTripWeather, forecastAvailable, forecastOpensOn, weatherLabel, weatherLocations } from './weather'
 
 function forecastFor(dates: string[]) {
   return weatherLocations.map(() => ({
@@ -57,5 +57,18 @@ describe('trip weather', () => {
     expect(weatherLabel(0)).toEqual({ icon: '☀️', text: '맑음' })
     expect(weatherLabel(63).text).toBe('비')
     expect(weatherLabel(95).text).toBe('뇌우')
+  })
+
+  it('derives the day the forecast opens from the first visited date', () => {
+    // 첫 방문지 9/9에서 16일 예보 범위만큼 거슬러 올라가면 8/25다.
+    const opens = forecastOpensOn()
+    expect(opens.getFullYear()).toBe(2026)
+    expect(opens.getMonth()).toBe(7)
+    expect(opens.getDate()).toBe(25)
+    expect(forecastAvailable(opens)).toBe(true)
+
+    const dayBefore = new Date(opens)
+    dayBefore.setDate(dayBefore.getDate() - 1)
+    expect(forecastAvailable(dayBefore)).toBe(false)
   })
 })

@@ -54,6 +54,17 @@ export function forecastHorizon(today = new Date()): string {
   return toIsoDate(horizon)
 }
 
+/**
+ * 예보가 처음 열리는 날. 첫 방문지 날짜에서 예보 범위만큼 거슬러 올라간 날짜다.
+ * 안내 문구에 날짜를 박아두면 일정이 바뀔 때 같이 틀어지므로 여기서 계산한다.
+ */
+export function forecastOpensOn(): Date {
+  const first = weatherLocations.reduce((earliest, place) => place.date < earliest ? place.date : earliest, weatherLocations[0].date)
+  const date = new Date(`${first}T00:00:00`)
+  date.setDate(date.getDate() - (forecastRangeDays - 1))
+  return date
+}
+
 export function forecastAvailable(today = new Date()): boolean {
   const horizon = forecastHorizon(today)
   return weatherLocations.some((place) => place.date <= horizon)
