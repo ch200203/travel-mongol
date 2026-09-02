@@ -62,19 +62,23 @@ test('360px 일정 화면에 해·별 시간과 이동·숙소 정보를 표시�
   await expect(page.getByText('31시간', { exact: true })).toBeVisible()
   await expect(page.getByText('2,000km', { exact: true })).toBeVisible()
   await expect(page.getByText('9/9 05:00', { exact: true })).toBeVisible()
-  await expect(page.getByText('9/14 16:00', { exact: true })).toBeVisible()
+  await expect(page.getByText('9/14 16:30', { exact: true })).toBeVisible()
   await expect(page.getByLabel('고비사막부터 테를지까지').getByText('11만원', { exact: true })).toBeVisible()
   await expect(page.getByRole('heading', { name: '별고비팀', exact: true })).toBeVisible()
   const firstDayGuide = page.locator('.day-guide-card').first()
   await expect(firstDayGuide.getByRole('heading', { name: '차강소브라가', exact: true })).toBeVisible()
   await expect(firstDayGuide.getByText('1인 +5만원', { exact: true })).toBeVisible()
-  await expect(firstDayGuide.getByText('✓ 전기 가능', { exact: true })).toBeVisible()
+  await expect(firstDayGuide.getByText('✓ 전기 무제한', { exact: true })).toBeVisible()
+  await expect(firstDayGuide.getByText('✓ 샤워 무제한', { exact: true })).toBeVisible()
   await expect(firstDayGuide.getByText('✓ 인터넷 가능', { exact: true })).toBeVisible()
-  await expect(firstDayGuide.getByText('✓ 샤워 가능', { exact: true })).toBeVisible()
+  const thirdDayGuide = page.locator('.day-guide-card').nth(2)
+  await expect(thirdDayGuide.getByText('◷ 전기 23:00까지', { exact: true })).toBeVisible()
+  await expect(thirdDayGuide.getByText('◷ 샤워 18:00~23:00', { exact: true })).toBeVisible()
   await expect(page.getByRole('heading', { name: '노을 및 일몰 감상' })).toBeVisible()
-  await expect(page.getByText('특식: 삼계탕 · 은하수 헌팅', { exact: true })).toBeVisible()
+  await expect(page.getByText('특식: 삼겹살 · 은하수 헌팅', { exact: true })).toBeVisible()
   await expect(page.getByText('15:00 공항 샌딩', { exact: true })).toBeVisible()
-  await expect(page.getByText('16:00 공항 도착', { exact: true })).toBeVisible()
+  await expect(page.getByText('16:30 공항 도착', { exact: true })).toBeVisible()
+  await expect(page.getByText('18:15 비행기 탑승', { exact: true })).toBeVisible()
 
   await page.locator('.tour-operator summary').click()
   await expect(page.getByRole('link', { name: '홈페이지 ↗' })).toHaveAttribute('href', 'https://www.yeonatour.com/')
@@ -101,6 +105,25 @@ test('안내 페이지에서 공항 미팅과 긴급 연락처를 확인한다',
   await expect(page.getByRole('link', { name: '공항 미팅 장소 사진 크게 보기' })).toHaveAttribute('target', '_blank')
   await expect(page.getByRole('link', { name: '+82-2-3210-0404' })).toHaveAttribute('href', 'tel:+82232100404')
   await expect(page.getByText('GobiSuntravel', { exact: true })).toBeVisible()
+  await expect(page.getByRole('link', { name: '여나투어 출발 전 안내 (노션) ↗' })).toBeVisible()
+
+  await page.getByText('숙소 전기와 샤워 시간').click()
+  await expect(page.getByText('🔌 전기 23:00까지 · 🚿 샤워 18:00~23:00', { exact: true })).toBeVisible()
+  await expect(page.getByText('🔌 전기 무제한 · 🚿 샤워 19:00~23:00', { exact: true })).toBeVisible()
+
+  await page.getByText('액티비티와 안전').click()
+  await expect(page.getByRole('heading', { name: '승마 · 낙타 체험' })).toBeVisible()
+  await expect(page.getByText('모터보트')).toHaveCount(0)
+})
+
+test('앨범이 Day별 목적지와 실제 일정 개수를 센다', async ({ page }) => {
+  await page.goto('/album')
+  const firstDay = page.locator('.album-days article').first()
+  await expect(firstDay.getByRole('heading', { name: '차강소브라가' })).toBeVisible()
+  // source 필터 회귀 방지: 로컬 시드는 전부 manual이라 예전 필터에서는 0개로 나왔다.
+  await expect(page.getByText(/일정 0개/)).toHaveCount(0)
+  await expect(firstDay.getByText(/일정 7개/)).toBeVisible()
+  await expect(page.locator('.album-days article')).toHaveCount(6)
 })
 
 test('첫 화면은 일정이며 공통/개인 준비가 분류된다', async ({ page }) => {
@@ -113,6 +136,8 @@ test('첫 화면은 일정이며 공통/개인 준비가 분류된다', async ({
   await page.getByRole('button', { name: '개인 준비물' }).click()
   await expect(page.getByText('보조배터리', { exact: true })).toBeVisible()
   await expect(page.getByText('여행자보험 가입 여부 결정', { exact: true })).toBeVisible()
+  await expect(page.getByText('손전등·헤드랜턴', { exact: true })).toBeVisible()
+  await expect(page.getByText('모래썰매용 긴 바지', { exact: true })).toBeVisible()
 })
 
 test('공금 목표와 멤버 입금액을 집계한다', async ({ page }) => {

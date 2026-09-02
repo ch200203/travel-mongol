@@ -321,6 +321,15 @@ h1, h2, h3, p { margin-top: 0; }
 .camp-compare b { color: var(--forest); }
 .camp-compare p { margin: .2rem 0 0; color: #69736d; font-size: .7rem; }
 .guide-muted { padding: .65rem; border-radius: 9px; background: #f2ecdf; }
+.camp-utility-list { display: grid; gap: .4rem; margin: 0 0 .75rem; padding: 0; list-style: none; }
+.camp-utility-list li { padding: .55rem .7rem; border: 1px solid #d8d7cd; border-left: 3px solid #8fae9b; border-radius: 10px; background: #f7f5ed; }
+.camp-utility-list li.limited { border-left-color: #d6aa67; background: #fdf6e8; }
+.camp-utility-list b { color: var(--forest); font-size: .72rem; }
+.camp-utility-list span { margin-left: .35rem; color: #7c857f; font-size: .64rem; }
+.camp-utility-list p { margin: .25rem 0 0; color: #5c665f; font-size: .66rem; }
+.safety-group { margin-bottom: .8rem; }
+.safety-group h4 { margin: 0 0 .3rem; color: var(--forest); font-size: .74rem; }
+.safety-group ul { margin: 0; }
 .packing-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .75rem; }
 .packing-tags span { padding: .28rem .45rem; border-radius: 99px; color: #315444; background: #dce8de; font-size: .66rem; font-weight: 700; }
 .guide-links { display: flex; flex-wrap: wrap; gap: .45rem; }
@@ -350,6 +359,8 @@ h1, h2, h3, p { margin-top: 0; }
 .lodging-summary > p { margin: .25rem 0 0; color: #6d756f; font-size: .68rem; }
 .amenity-list { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .35rem; }
 .amenity-list span { padding: .22rem .42rem; border-radius: 99px; color: #28513f; background: #dce9df; font-size: .62rem; font-weight: 700; }
+.amenity-list span.limited { color: #7a5a1c; background: #f6e5c2; }
+.meal-note { margin: .5rem 0 0; padding: .5rem .6rem; border-radius: 8px; color: #6f6448; background: #f7efdd; font-size: .62rem; line-height: 1.5; }
 .highlight-list { display: flex; flex-wrap: wrap; gap: .35rem; padding: 0 1rem .75rem; }
 .highlight-list span { padding: .25rem .45rem; border: 1px solid #dbc69e; border-radius: 99px; color: #6f552e; background: #fffaf0; font-size: .62rem; }
 .lodging-details { border-top: 1px solid #ded3bc; background: #fffaf0; }

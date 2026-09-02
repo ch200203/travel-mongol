@@ -8,6 +8,11 @@ interface Props { data: TripData; mutate: (operation: () => Promise<void>) => Pr
 export function TripHeader({ data, mutate }: Props) {
   const [editing, setEditing] = useState(false)
   const memberName = (id: string | null) => data.members.find((member) => member.id === id)?.name ?? '미정'
+  // 예약금 완료 여부는 준비물 탭의 결제 단계와 같은 체크 데이터에서 센다.
+  const depositTask = data.tasks.find((task) => task.title.includes('예약금'))
+  const depositDone = depositTask ? data.checks.filter((check) => check.task_id === depositTask.id && check.is_completed).length : 0
+  const depositLabel = depositDone === data.members.length ? '21만원 · 완료' : `21만원 · ${depositDone}/${data.members.length}명`
+
   const period = data.trip.start_date && data.trip.end_date
     ? `${data.trip.start_date} — ${data.trip.end_date}`
     : '여행 날짜 미정 · 5박 6일'
@@ -35,7 +40,7 @@ export function TripHeader({ data, mutate }: Props) {
       </div>
       <div className="trip-facts" aria-label="여행 견적 참고">
         <span><small>차량</small><strong>하이에스</strong></span>
-        <span><small>1인 예약금</small><strong>21만원 · 완료</strong></span>
+        <span><small>1인 예약금</small><strong>{depositLabel}</strong></span>
         <span><small>1인 현지 잔금</small><strong>95만원</strong></span>
         <span><small>1인 숙소 추가</small><strong>11만원</strong></span>
         <span><small>1인 예상 총액</small><strong>127만원</strong></span>

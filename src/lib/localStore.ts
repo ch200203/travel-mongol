@@ -17,6 +17,9 @@ const taskSeeds: Array<{ id: string; title: string; category: CommonTask['catego
   { id: 'local-common-deposit', title: '예약금 21만원 입금', category: 'required' },
   { id: 'local-common-balance', title: '현지 잔금 95만원 준비', category: 'required' },
   { id: 'local-common-flight-time', title: '항공편 시간 확인', category: 'required' },
+  { id: 'local-common-notion', title: '노션 여행 안내 정독', category: 'required' },
+  { id: 'local-common-contract', title: '투어 계약서·면책 동의서 확인', category: 'required' },
+  { id: 'local-common-riding', title: '승마·낙타 체험 참여 여부 정하기', category: 'optional' },
   { id: 'local-common-eagle', title: '독수리 체험 참여 여부 정하기', category: 'optional' },
   { id: 'local-common-museum', title: '징기스칸 동상 박물관 입장 여부 정하기', category: 'optional' },
   { id: 'local-common-lunch', title: '마지막 날 점심 업그레이드 여부 정하기', category: 'optional' },
@@ -56,6 +59,8 @@ const recommendedItems: Array<Pick<PersonalItem, 'title' | 'category' | 'priorit
   { title: '별사진용 삼각대', category: 'other', priority: 'optional' },
   { title: '핫팩', category: 'other', priority: 'optional' },
   { title: '여행자보험 가입 여부 결정', category: 'other', priority: 'optional' },
+  { title: '손전등·헤드랜턴', category: 'electronics', priority: 'required' },
+  { title: '모래썰매용 긴 바지', category: 'clothing', priority: 'required' },
 ]
 
 function personalSeed(): PersonalItem[] {
@@ -90,7 +95,7 @@ const itinerarySeed: ItinerarySeed[] = [
   { day_number: 3, start_time: '08:00', end_time: null, title: '숙소 출발', location: null, note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 0 },
   { day_number: 3, start_time: '12:00', end_time: null, title: '숙소 도착 및 점심 식사', location: '고급 캠프(오두막)', note: '캠프식 · 1인 숙소 추가금 3만원', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
   { day_number: 3, start_time: '15:00', end_time: null, title: '고비사막 투어', location: '홍고린엘스', note: '모래 썰매 · 낙타 체험', link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
-  { day_number: 3, start_time: '18:00', end_time: null, title: '저녁 식사', location: '고급 캠프(오두막)', note: '특식: 삼계탕 · 은하수 헌팅', link_url: null, status: 'proposed', source: 'manual', sort_order: 3 },
+  { day_number: 3, start_time: '18:00', end_time: null, title: '저녁 식사', location: '고급 캠프(오두막)', note: '특식: 삼겹살 · 은하수 헌팅', link_url: null, status: 'proposed', source: 'manual', sort_order: 3 },
   { day_number: 4, start_time: '09:00', end_time: null, title: '숙소 출발', location: null, note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 0 },
   { day_number: 4, start_time: '12:00', end_time: null, title: '점심 식사', location: null, note: '현지 식당', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
   { day_number: 4, start_time: '13:00', end_time: null, title: '바양작 투어', location: '바양작', note: null, link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
@@ -106,11 +111,19 @@ const itinerarySeed: ItinerarySeed[] = [
   { day_number: 6, start_time: '09:00', end_time: null, title: '징기스칸 기마 동상 방문', location: '징기스칸 기마 동상', note: '박물관 입장 추가 비용', link_url: null, status: 'proposed', source: 'manual', sort_order: 1 },
   { day_number: 6, start_time: '12:00', end_time: null, title: '점심 식사 및 시내 투어', location: '울란바토르', note: '수흐바타르 광장 · 국영백화점 · 캐시미어 매장', link_url: null, status: 'proposed', source: 'manual', sort_order: 2 },
   { day_number: 6, start_time: '15:00', end_time: null, title: '공항 샌딩', location: '울란바토르 → UBN', note: '시내에서 공항으로 이동', link_url: null, status: 'confirmed', source: 'manual', sort_order: 3 },
-  { day_number: 6, start_time: '16:00', end_time: null, title: '공항 도착 및 투어 종료', location: 'UBN 공항', note: '별고비팀 투어 종료', link_url: null, status: 'confirmed', source: 'manual', sort_order: 4 },
+  { day_number: 6, start_time: '16:30', end_time: null, title: '공항 도착 및 투어 종료', location: 'UBN 공항', note: '별고비팀 투어 종료', link_url: null, status: 'confirmed', source: 'manual', sort_order: 4 },
 ]
 
+/** 최종 일정표가 바뀌면 접두사의 버전을 올려 기존 기기의 시드 일정을 통째로 갈아끼운다. */
+const scheduleSeedPrefix = 'local-schedule-v2'
+
 function itinerarySeedRows(): ItineraryItem[] {
-  return itinerarySeed.map((item, index) => ({ ...item, id: `local-schedule-${index + 1}`, trip_id: tripId }))
+  return itinerarySeed.map((item, index) => ({ ...item, id: `${scheduleSeedPrefix}-${index + 1}`, trip_id: tripId }))
+}
+
+/** 시드로 심은 일정인지 판별한다. 사용자가 직접 추가한 일정은 UUID라 여기에 걸리지 않는다. */
+function isSeededSchedule(id: string): boolean {
+  return /^local-schedule(-v\d+)?-\d+$/.test(id) || /^local-itinerary-/.test(id)
 }
 
 const flightItems: ItineraryItem[] = [
@@ -185,15 +198,15 @@ export function loadLocalData(): TripData {
     for (const flight of flightItems) {
       if (!data.itinerary.some((item) => item.id === flight.id)) { data.itinerary.push(flight); changed = true }
     }
-    if (!data.itinerary.some((item) => item.id === 'local-schedule-1')) {
-      data.itinerary = data.itinerary.filter((item) => !/^local-itinerary-[1-6]$/.test(item.id) && item.id !== 'local-itinerary-baga-cancelled' && item.id !== 'local-itinerary-tour-end')
+    if (!data.itinerary.some((item) => item.id === `${scheduleSeedPrefix}-1`)) {
+      data.itinerary = data.itinerary.filter((item) => !isSeededSchedule(item.id))
       data.itinerary.push(...itinerarySeedRows())
       changed = true
     }
     if (!tasks.every((task) => data.tasks.some((item) => item.id === task.id))) {
       const oldTasks = data.tasks
       const oldChecks = data.checks
-      const knownPattern = /여권|항공권 발권|예약금|현지 잔금|여행자보험|유심|개인 준비물 목록|운동화|항공편 시간|비상 연락처|독수리 체험|기마 동상|점심 업그레이드/
+      const knownPattern = /여권|항공권 발권|예약금|현지 잔금|여행자보험|유심|개인 준비물 목록|운동화|항공편 시간|비상 연락처|노션|계약서|면책|승마|독수리 체험|기마 동상|점심 업그레이드/
       const customTasks = oldTasks.filter((task) => !knownPattern.test(task.title) && !tasks.some((seed) => seed.id === task.id))
         .map((task, index) => ({ ...task, category: task.category ?? 'required' as const, sort_order: tasks.length + index }))
       const aliases: Record<string, RegExp> = {
@@ -202,6 +215,9 @@ export function loadLocalData(): TripData {
         'local-common-deposit': /예약금/,
         'local-common-balance': /현지 잔금/,
         'local-common-flight-time': /항공편 시간/,
+        'local-common-notion': /노션/,
+        'local-common-contract': /계약서|면책/,
+        'local-common-riding': /승마/,
         'local-common-eagle': /독수리 체험/,
         'local-common-museum': /기마 동상/,
         'local-common-lunch': /점심 업그레이드/,
