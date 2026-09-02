@@ -28,17 +28,18 @@ select ok((select bool_and(relrowsecurity) from pg_class where oid in (
 )), 'RLS is enabled on every exposed table');
 
 select is((select count(*) from api.members), 6::bigint, 'seed has six members');
-select is((select count(*) from api.common_preparation_tasks), 8::bigint, 'seed has eight classified common tasks');
+select is((select count(*) from api.common_preparation_tasks), 11::bigint, 'seed has eleven classified common tasks');
 select is((select count(distinct day_number) from api.itinerary_items), 6::bigint, 'seed covers Day 1 through Day 6');
 select is((select count(*) from api.expenses), 0::bigint, 'quote amounts are not seeded as expenses');
-select is((select count(*) from api.common_preparation_checks), 48::bigint, 'every common task has a check for every member');
-select is((select count(*) from api.personal_preparation_items where is_recommended), 144::bigint, 'each member receives 24 recommended personal items');
+select is((select count(*) from api.common_preparation_checks), 66::bigint, 'every common task has a check for every member');
+select is((select count(*) from api.personal_preparation_items where is_recommended), 156::bigint, 'each member receives 26 recommended personal items');
 select is((select count(*) from api.shared_funds), 1::bigint, 'seed has one shared travel fund');
 select is((select count(*) from api.fund_contributions), 0::bigint, 'fund starts without fabricated contributions');
 select is((select name from api.trips limit 1), '별고비팀', 'seed uses the confirmed team name');
 select is((select count(*) from api.itinerary_items where title = '바가가즈린촐로 투어'), 0::bigint, 'removed destination is absent');
 select is((select count(*) from api.itinerary_items where day_number = 4 and title = '노을 및 일몰 감상'), 1::bigint, 'Day 4 includes sunset viewing');
-select is((select count(*) from api.itinerary_items where day_number = 6 and start_time in ('15:00', '16:00')), 2::bigint, 'Day 6 includes airport transfer and arrival');
+select is((select count(*) from api.itinerary_items where day_number = 6 and start_time in ('15:00', '16:30')), 2::bigint, 'Day 6 includes airport transfer and arrival');
+select is((select note from api.itinerary_items where day_number = 3 and title = '저녁 식사'), '특식: 삼겹살 · 은하수 헌팅', 'Day 3 dinner matches the final schedule');
 
 select * from finish();
 rollback;
