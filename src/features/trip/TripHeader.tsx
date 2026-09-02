@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { updateRoles } from '../../lib/supabase/repository'
 import type { TripData } from '../../lib/types'
 import { isLocalMode } from '../../lib/supabase/client'
+import { useOnlineStatus } from '../../lib/useOnlineStatus'
 
 interface Props { data: TripData; mutate: (operation: () => Promise<void>) => Promise<void> }
 
 export function TripHeader({ data, mutate }: Props) {
   const [editing, setEditing] = useState(false)
+  const online = useOnlineStatus()
   const memberName = (id: string | null) => data.members.find((member) => member.id === id)?.name ?? '미정'
   // 예약금 완료 여부는 준비물 탭의 결제 단계와 같은 체크 데이터에서 센다.
   const depositTask = data.tasks.find((task) => task.title.includes('예약금'))
@@ -37,6 +39,7 @@ export function TripHeader({ data, mutate }: Props) {
         <span><b>팀장</b> {memberName(data.trip.leader_member_id)}</span>
         <span><b>총무</b> {memberName(data.trip.treasurer_member_id)}</span>
         <span className="public-badge">{isLocalMode ? '이 기기에 저장' : '공개 편집'}</span>
+        {!online && <span className="offline-badge" role="status">오프라인</span>}
       </div>
       <div className="trip-facts" aria-label="여행 견적 참고">
         <span><small>차량</small><strong>하이에스</strong></span>

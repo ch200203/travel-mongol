@@ -321,6 +321,7 @@ h1, h2, h3, p { margin-top: 0; }
 .camp-compare b { color: var(--forest); }
 .camp-compare p { margin: .2rem 0 0; color: #69736d; font-size: .7rem; }
 .guide-muted { padding: .65rem; border-radius: 9px; background: #f2ecdf; }
+.offline-badge { padding: .2rem .45rem; border-radius: 99px; color: #7a3f16; background: #f3d9b5; font-size: .62rem; font-weight: 700; }
 .camp-utility-list { display: grid; gap: .4rem; margin: 0 0 .75rem; padding: 0; list-style: none; }
 .camp-utility-list li { padding: .55rem .7rem; border: 1px solid #d8d7cd; border-left: 3px solid #8fae9b; border-radius: 10px; background: #f7f5ed; }
 .camp-utility-list li.limited { border-left-color: #d6aa67; background: #fdf6e8; }
